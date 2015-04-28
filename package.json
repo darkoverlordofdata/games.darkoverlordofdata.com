@@ -9,7 +9,17 @@
   },
   "dependencies": {
     "config-multipaas": "0.0.6",
-    "hapi": "^8.0.0"
+    "good": "^5.1.0",
+    "good-console": "^4.0.0",
+    "hapi": "^8.0.0",
+    "hapi-assets": "~0.3.0",
+    "hapi-cache-buster": "~0.4.0",
+    "hapi-named-routes": "~0.3.0",
+    "coffee-script": "~1.9.2",
+    "liquid.coffee": "~0.1.0",
+    "lodash": "~3.7.0",
+    "sqlite3": "~3.0.5",
+    "zip-dir": "~1.0.0"
   },
   "devDependencies": {
     "tap": "^0.4.13"
