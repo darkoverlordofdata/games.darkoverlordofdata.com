@@ -3,15 +3,17 @@ Dependencies.
 ###
 Hapi = require("hapi")
 config = require('config-multipaas')()
-console.log config
 
 # Create a new server
 server = new Hapi.Server()
 
 # Setup the server with a host and port
 server.connection
-  port: config.get('PORT')
-  host: config.get('IP')
+  port: process.env.OPENSHIFT_NODEJS_PORT ? 3000
+  host: process.env.OPENSHIFT_NODEJS_IP ? '127.0.0.1'
+
+#  port: config.get('PORT')
+#  host: config.get('IP')
 
 #  port: parseInt(process.env.PORT, 10) or 8080
 #  host: "0.0.0.0"

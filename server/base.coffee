@@ -14,7 +14,7 @@ exports.register = (server, options, next) ->
       config:
         handler: (request, reply) ->
           reply.view "about",
-            topHref: '/home'
+            topHref: '/'
             topButton: 'Home'
 
           return
@@ -52,15 +52,12 @@ exports.register = (server, options, next) ->
       path: "/"
       config:
         handler: (request, reply) ->
-          db.all 'SELECT * FROM katra', (err, rows) ->
-            reply.view "index",
-              topHref: '/about'
-              topButton: 'About'
-            return
-
+#          db.all 'SELECT * FROM katra', (err, rows) ->
+          reply.view "index",
+            topHref: '/about'
+            topButton: 'About'
           return
-
-        id: "index"
+#        id: "index"
     }
 
 
