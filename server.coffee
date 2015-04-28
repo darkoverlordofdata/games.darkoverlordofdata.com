@@ -2,9 +2,18 @@
 Dependencies.
 ###
 Hapi = require("hapi")
-config = require('config-multipaas')()
+#config = require('config-multipaas')()
 
 # Create a new server
+#cached = [
+#  {
+#    name: 'memCached'
+#    engine: require('catbox-memcached')
+#    host: '127.0.0.1'
+#    partition: 'games'
+#  }
+#]
+#server = new Hapi.Server(cache: cached)
 server = new Hapi.Server()
 
 # Setup the server with a host and port
@@ -59,15 +68,6 @@ server.register [
   }
   {
     register: require("hapi-assets")
-    options:
-      development: {
-        js: ['js/test-one.js', 'js/test-two.js'],
-        css: ['css/test-one.css', 'css/test-two.css']
-      },
-      production: {
-        js: ['js/scripts.js'],
-        css: ['css/styles.css']
-      }
   }
   {
     register: require("hapi-named-routes")
