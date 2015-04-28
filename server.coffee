@@ -16,7 +16,6 @@ server.connection
 #  port: parseInt(process.env.PORT, 10) or 8080
 #  host: "0.0.0.0"
 
-
 # Setup the views engine and folder
 server.views
   path: "./server/views"
