@@ -1,6 +1,6 @@
 {
-  "name": "HAPI-base",
-  "description": "A simple HAPI server with support for static files",
+  "name": "gameshare",
+  "description": "Dark Overlord & Bosco's Game*O*Rama",
   "version": "0.0.1",
   "private": false,
   "engines": {
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "config-multipaas": "0.0.6",
-    "hapi": "^7.5.2"
+    "hapi": "^8.0.0"
   },
   "devDependencies": {
     "tap": "^0.4.13"
@@ -21,6 +21,6 @@
   "scripts": {
     "start": "node server.js"
   },
-  "license": "CC0",
+  "license": "MIT",
   "main": "server.js"
 }

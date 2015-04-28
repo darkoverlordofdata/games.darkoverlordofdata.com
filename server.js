@@ -2,10 +2,10 @@ var cc     = require('config-multipaas'),
     Hapi   = require('hapi'),
     path   = require('path')
 var config = cc()
-var server = Hapi.createServer(config.get('IP'), config.get('PORT'), {
-  cors:  true,
-  files: { relativeTo: path.resolve('.','static')}
-});
+
+
+var server = new Hapi.Server()
+server.connection({port: config.get('PORT'), host: config.get('IP')});
 
 // Routes
 server.route({
@@ -18,7 +18,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/{param*}',
-  handler: { directory: { path: '.' }} // relativeTo: '/static/'
+  handler: { directory: { path: './static/' }} // relativeTo: '/static/'
 })
 
 server.start(function () {
