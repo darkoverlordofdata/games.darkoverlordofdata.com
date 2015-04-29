@@ -1,4 +1,9 @@
-# Base routes for default index/root path, about page, 404 error pages, and others..
+#
+# game routes:
+#
+#   /{game}
+#   /ns/{game}
+#
 exports.register = (server, options, next) ->
 
   fs = require('fs')
@@ -7,7 +12,7 @@ exports.register = (server, options, next) ->
 
   server.route [
     {
-      method: ["GET", "POST"]
+      method: ["GET", "POST"] # fb compatible
       path: "/game/{name}"
       config:
         handler: (request, reply) ->
@@ -21,7 +26,7 @@ exports.register = (server, options, next) ->
       path: "/nw/{name}"
       config:
         handler: (request, reply) ->
-          zipdir path.join(__dirname, '../public/game/', request.params.name), (err, data) ->
+          zipdir path.join(server.settings.app.sys, '/public/game/', request.params.name), (err, data) ->
             return reply(err) if err
             reply(data)
             .type('application/zip')

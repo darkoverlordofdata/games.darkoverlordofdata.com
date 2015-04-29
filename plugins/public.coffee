@@ -1,5 +1,9 @@
-
+#
+# Public assets
+#
 exports.register = (server, options, next) ->
+
+  path = require('path')
 
   server.route [
     {
@@ -8,7 +12,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/assets"
+            path: path.join(server.settings.app.sys, "public/assets")
 
         id: "assets"
     }
@@ -18,7 +22,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/css"
+            path: path.join(server.settings.app.sys, "public/css")
 
         id: "css"
     }
@@ -28,7 +32,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/fonts"
+            path: path.join(server.settings.app.sys, "public/fonts")
 
         id: "fonts"
     }
@@ -38,7 +42,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/game"
+            path: path.join(server.settings.app.sys, "public/game")
 
         id: "games"
     }
@@ -48,7 +52,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/img"
+            path: path.join(server.settings.app.sys, "public/img")
 
         id: "img"
     }
@@ -58,7 +62,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/js"
+            path: path.join(server.settings.app.sys, "public/js")
 
         id: "js"
     }
@@ -68,7 +72,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: "./public/tpl"
+            path: path.join(server.settings.app.sys, "public/tpl")
 
         id: "tpl"
     }

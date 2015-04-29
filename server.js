@@ -7,4 +7,4 @@ require('coffee-script/register');
  *
  * pass thru app reference
  */
-module.exports = require('./server.coffee');
+module.exports = require('./server/server.coffee');

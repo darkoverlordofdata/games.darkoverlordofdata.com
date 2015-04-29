@@ -24,13 +24,14 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-
+{% assign top_href = '/' %}{% if topHref %}{% assign top_href = topHref %}{% endif %}
+{% assign top_button = 'Home' %}{% if topButton %}{% assign top_button = topButton %}{% endif %}
 <body>
 
 <div class="container">
   <div class="well beta">
     <img src="/img/welcome.png" class="img-responsive img-rounded" alt="darkoverlord & bosco's game-o-rama">
-    <a class="pull-right btn btn-info" href="{{ topHref }}" role="button">{{ topButton}}</a>
+    <a class="pull-right btn btn-info" href="{{ top_href }}" role="button">{{ top_button }}</a>
   </div>
 
   <!-- Marketing messaging and featurettes
@@ -39,7 +40,7 @@
 
   <div class="container marketing">
 
-    {% block 'content' %}
+    {% block content %}
     {% endblock %}
     <footer>
       <p><a class="pull-left" href="#">Back to top</a> &nbsp;</p>

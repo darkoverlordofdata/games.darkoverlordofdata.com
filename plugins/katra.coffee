@@ -1,4 +1,12 @@
-# Base routes for default index/root path, about page, 404 error pages, and others..
+#
+# katra routes:
+#
+#   /run
+#   /sttr1
+#   /wumpus
+#   /eliza
+#   /oregon
+#
 exports.register = (server, options, next) ->
   server.route [
     {

@@ -1,20 +1,22 @@
 {% extends 'layout.tpl' %}
-{% block 'content' %}
+{% block content %}
 
 <!-- START THE FEATURETTES -->
-    <div class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading"><a href="/game/asteroids">Asteroids</a></h2>
-        <p class="lead">Back on Arcturus, we use this as a flight simulator
-          <img src="img/nw.png">
-          <a href="/nw/asteroids">Download</a> packaged for <a href="http://nwjs.io/">Node WebKit</a>
-        </p>
-      </div>
-      <div class="col-md-5"><a href="/game/asteroids">
-        <img class="featurette-image img-responsive img-rounded center-block" src="assets/asteroids.png" alt="Generic placeholder image">
-      </a>
-      </div>
-    </div>
+    {% for g in games %}
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading"><a href="/game/{{ g.slug }}">Asteroids</a></h2>
+                <p class="lead">{{ g.description }}
+                    <img src="img/nw.png">
+                    <a href="/nw/{{ g.slug }}">Download</a> packaged for <a href="http://nwjs.io/">Node WebKit</a>
+                </p>
+            </div>
+            <div class="col-md-5"><a href="/game/{{ g.slug }}">
+                <img class="featurette-image img-responsive img-rounded center-block" src="assets/{{ g.slug }}.png" alt="{{ g.name }}">
+            </a>
+            </div>
+        </div>
+    {% endfor %}
 
     <hr class="featurette-divider">
 
@@ -32,56 +34,18 @@
 
     <hr class="featurette-divider">
 
-    <div class="row featurette">
-      <div class="col-md-7 col-md-push-5">
-        <h2 class="featurette-heading"><a href="/katra/sttr1">Space . . .</a></h2>
-        <p class="lead">Like, beam me up, dude.</p>
-      </div>
-      <div class="col-md-5 col-md-pull-7"><a href="/katra/sttr1">
-        <img class="featurette-image img-responsive img-rounded center-block" src="assets/katra.png" alt="Generic placeholder image">
-      </a>
-      </div>
-    </div>
+    {% for k in katra %}
+        <div class="row featurette">
+            <div class="col-md-7 {% cycle 'col-md-push-5', ''  %}">
+                <h2 class="featurette-heading"><a href="/katra/{{ k.slug }}">{{ k.title }}.</a></h2>
+                <p class="lead">{{ k.description }}</p>
+            </div>
+            <div class="col-md-5 {% cycle 'col-md-pull-7', '' %}"><a href="/katra/{{ k.slug }}">
+                <img class="featurette-image img-responsive img-rounded center-block" src="/assets/{{ k.slug }}.png" alt="Generic placeholder image">
+            </a>
+            </div>
+        </div>
 
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading"><a href="/katra/wumpus">Hunt the Wumpus</a></h2>
-        <p class="lead">What's a Wumpus?</p>
-      </div>
-      <div class="col-md-5"><a href="/katra/wumpus">
-        <img class="featurette-image img-responsive img-rounded center-block" src="assets/wumpus.png" alt="Generic placeholder image">
-      </a>
-      </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-      <div class="col-md-7 col-md-push-5">
-        <h2 class="featurette-heading"><a href="/katra/eliza">Eliza</a></h2>
-        <p class="lead">A shrink with a 'tude.</p>
-      </div>
-      <div class="col-md-5 col-md-pull-7"><a href="/katra/eliza">
-        <img class="featurette-image img-responsive img-rounded center-block" src="assets/eliza.png" alt="Generic placeholder image">
-      </a>
-      </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading"><a href="/katra/oregon">Oregon</a></h2>
-        <p class="lead">Why do you put your wagons in a circle?
-        <br>To get better Wi-Fi!</p>
-      </div>
-      <div class="col-md-5"><a href="/katra/oregon">
-        <img class="featurette-image img-responsive img-rounded center-block" src="assets/oregon.png" alt="Generic placeholder image">
-      </a>
-      </div>
-    </div>
-
-    <hr class="featurette-divider">
+        <hr class="featurette-divider">
+    {% endfor %}
 {% endblock %}

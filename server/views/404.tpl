@@ -1,5 +1,5 @@
 {% extends 'layout.tpl' %}
-{% block 'content' %}
+{% block content %}
 <div class="row">
     <div class="alert alert-block %>">
         <h3>404</h3>

@@ -1,5 +1,5 @@
 {% extends 'layout.tpl' %}
-{% block 'content' %}
+{% block content %}
     <div class="col-lg-6" id="bosco">
       <img class="img-circle" src="img/bosco.png" width="140" height="140">
       <h2>Bosco</h2>

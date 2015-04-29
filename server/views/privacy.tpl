@@ -1,5 +1,5 @@
 {% extends 'layout.tpl' %}
-{% block 'content' %}
+{% block content %}
 
     <div class="row featurette" id="terms">
       <div class="col-md-7">
