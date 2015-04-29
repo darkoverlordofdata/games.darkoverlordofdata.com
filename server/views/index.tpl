@@ -34,7 +34,7 @@
 
     <hr class="featurette-divider">
 
-    {% for k in katra %}
+    {% for k in katras %}
         <div class="row featurette">
             <div class="col-md-7 {% cycle 'col-md-push-5', ''  %}">
                 <h2 class="featurette-heading"><a href="/katra/{{ k.slug }}">{{ k.title }}.</a></h2>

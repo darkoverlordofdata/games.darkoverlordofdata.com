@@ -113,6 +113,7 @@ module.exports =
   plugins: [
     'hapi-named-routes'
     'hapi-cache-buster'
+    './errors'
     '../plugins/public'
     '../plugins/base'
     '../plugins/katra'
