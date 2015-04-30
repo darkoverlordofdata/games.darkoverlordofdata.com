@@ -14,18 +14,34 @@ exports.register = (server, options, next) ->
 
   server.route [
     {
-      method: ["GET", "POST"] # fb compatible
-      path: "/game/{name}"
+      #
+      # Display on FaceBook?
+      #
+      method: 'POST'
+      path: '/game/{name}'
       config:
         handler: (request, reply) ->
-#          reply.redirect request.params.name+'/'+request.params.name+'.html'
           reply.redirect 'https://darkoverlordofdata.com/'+request.params.name+'/'+request.params.name+'.html'
-          return
 
     }
     {
-      method: "GET"
-      path: "/nw/{name}"
+      #
+      # Display it here
+      #
+      method: 'GET' # Show in an iframe
+      path: '/game/{name}'
+      config:
+        handler: (request, reply) ->
+          server.methods.find 'Game', {where: slug:request.params.name}, (err, game) ->
+            reply.view 'play', game: game
+
+    }
+    {
+      #
+      # NodeWebkit download??? Do we need this???
+      #
+      method: 'GET'
+      path: '/nw/{name}'
       config:
         handler: (request, reply) ->
           zipdir path.join(server.settings.app.base, '/public/game/', request.params.name), (err, data) ->
@@ -34,9 +50,8 @@ exports.register = (server, options, next) ->
             .type('application/zip')
             .header('Content-Disposition', 'attachment; filename='+request.params.name+'.nw')
             .header('Content-Length', data.length)
-            return
 
-        id: "nw"
+        id: 'nw'
     }
   ]
 
@@ -44,4 +59,4 @@ exports.register = (server, options, next) ->
   next()
   return
 
-exports.register.attributes = name: "games"
+exports.register.attributes = name: 'games'

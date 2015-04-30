@@ -9,7 +9,7 @@ module.exports =
         active: 1
         name: 'Asteroid Simulator'
         slug: 'asteroids'
-        url: 'https://github.com/darkoverlordofdata/asteroids'
+        url: 'https://darkoverlordofdata.com/asteroids'
         author: 'darkoverlordofdata'
         description: 'Classic Asteroids using modern physics'
         version: '0.0.1'
