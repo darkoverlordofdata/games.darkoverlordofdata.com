@@ -15,7 +15,7 @@
     "hapi-cache-buster": "~0.4.0",
     "hapi-named-routes": "~0.3.0",
     "coffee-script": "~1.9.2",
-    "liquid.coffee": "~0.1.0",
+    "liquid.coffee": "darkoverlordofdata/liquid.coffee",
     "lodash": "~3.7.0",
     "sqlite3": "~3.0.5",
     "zip-dir": "~1.0.0",

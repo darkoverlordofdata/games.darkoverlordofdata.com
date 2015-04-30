@@ -12,7 +12,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/assets")
+            path: path.join(server.settings.app.base, "public/assets")
 
         id: "assets"
     }
@@ -22,7 +22,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/css")
+            path: path.join(server.settings.app.base, "public/css")
 
         id: "css"
     }
@@ -32,7 +32,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/fonts")
+            path: path.join(server.settings.app.base, "public/fonts")
 
         id: "fonts"
     }
@@ -42,7 +42,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/game")
+            path: path.join(server.settings.app.base, "public/game")
 
         id: "games"
     }
@@ -52,7 +52,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/img")
+            path: path.join(server.settings.app.base, "public/img")
 
         id: "img"
     }
@@ -62,7 +62,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/js")
+            path: path.join(server.settings.app.base, "public/js")
 
         id: "js"
     }
@@ -72,7 +72,7 @@ exports.register = (server, options, next) ->
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.sys, "public/tpl")
+            path: path.join(server.settings.app.base, "public/tpl")
 
         id: "tpl"
     }

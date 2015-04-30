@@ -46,7 +46,7 @@
     <div class="row featurette" id="katra">
       <div class="col-md-7">
         <h2 class="featurette-heading">Game*O*Rama</h2>
-        <p>Built on Hapi using CoffeeScript. Game*O*Rama uses SQLite3 and Liquid.Coffee templates
+        <p>Built with <a href="http://hapijs.com/">Hapi</a>, SQLite3 and Liquid.Coffee templates
 
         </p>
       </div>

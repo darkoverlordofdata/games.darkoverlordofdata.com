@@ -1,6 +1,3 @@
-path = require('path')
-BASE = path.resolve(__dirname, '../..')
-
 module.exports =
 
   #|
@@ -15,33 +12,13 @@ module.exports =
 
   #|
   #|--------------------------------------------------------------------------
-  #| View Extension
-  #|--------------------------------------------------------------------------
-  #|
-  #| The default view filetype that is loaded when no extension is specified
-  #|
-  #|
-  view_ext: 'tpl'
-
-  #|
-  #|--------------------------------------------------------------------------
-  #| View Engine
-  #|--------------------------------------------------------------------------
-  #|
-  #| The default view engine to use for view_ext
-  #|
-  #|
-  view_engine:  path.resolve(BASE,'./server/config/liquid.coffee')
-
-  #|
-  #|--------------------------------------------------------------------------
   #| System Path
   #|--------------------------------------------------------------------------
   #|
   #| Where the server script lives
   #|
   #|
-  sys: BASE
+  base: __dirname
 
   #|
   #|--------------------------------------------------------------------------
@@ -51,7 +28,7 @@ module.exports =
   #| Path to application plugins
   #|
   #|
-  apps: path.resolve(BASE, './plugins')
+  apps: __dirname+'/application'
 
   #|
   #|--------------------------------------------------------------------------
@@ -61,7 +38,7 @@ module.exports =
   #| Path to view templates
   #|
   #|
-  views: path.resolve(BASE, './server/views')
+  views: __dirname+'/views'
 
   #|
   #|--------------------------------------------------------------------------
@@ -113,12 +90,10 @@ module.exports =
   plugins: [
     'hapi-named-routes'
     'hapi-cache-buster'
-    './errors'
-    '../plugins/public'
-    '../plugins/base'
-    '../plugins/katra'
-    '../plugins/games'
-    '../plugins/liquid'
+    __dirname+'/application/public'
+    __dirname+'/application/base'
+    __dirname+'/application/katra'
+    __dirname+'/application/games'
   ]
 
   #|
@@ -138,3 +113,4 @@ module.exports =
       js: [],
       css: []
     ]
+

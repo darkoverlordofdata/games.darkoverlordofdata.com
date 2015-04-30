@@ -1,4 +1,6 @@
 #
+# Run or download from the game public folder
+#
 # game routes:
 #
 #   /{game}
@@ -19,14 +21,13 @@ exports.register = (server, options, next) ->
           reply.redirect request.params.name+'/'+request.params.name+'.html'
           return
 
-#        id: "game"
     }
     {
       method: "GET"
       path: "/nw/{name}"
       config:
         handler: (request, reply) ->
-          zipdir path.join(server.settings.app.sys, '/public/game/', request.params.name), (err, data) ->
+          zipdir path.join(server.settings.app.base, '/public/game/', request.params.name), (err, data) ->
             return reply(err) if err
             reply(data)
             .type('application/zip')
@@ -37,6 +38,8 @@ exports.register = (server, options, next) ->
         id: "nw"
     }
   ]
+
+
   next()
   return
 

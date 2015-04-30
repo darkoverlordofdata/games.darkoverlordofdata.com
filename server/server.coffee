@@ -2,48 +2,51 @@
 # Games server
 #
 Hapi = require('hapi')
-module.exports = server = new Hapi.Server(app:require('./config'))
+
+config = require('../config')
+
+#cache =
+#  engine: require('catbox-memcached')
+#  location: 'localhost:11211'
+
+module.exports = server = new Hapi.Server(app: config) #, cache: cache)
 
 #
 # Setup the server with a host and port
 #
 server.connection
-  port: server.settings.app.port
-  host: server.settings.app.host
+  port: config.port
+  host: config.host
 
-
-# Set the default views engine and folder
-# This will be used to display 404 and 5xx error pages
-views =
-  path: server.settings.app.views
-  engines: {}
-views.engines[server.settings.app.view_ext] = require(server.settings.app.view_engine)
-server.views views
 #
+# Set the default views engine and folder
+#
+server.views
+  path: config.views
+  engines:
+    tpl: require('liquid.coffee').setPath(config.views)
 
-plugins = []
 #
 # Load all plugins:
 #
-plugins.push
-  register: require('good')
-  options:
-    opsInterval: 5000
-    reporters: [
-      reporter: require('good-console')
-      args: server.settings.app.log
-    ]
-
+plugins = [{
+    register: require('good')
+    options:
+      opsInterval: 5000
+      reporters: [
+        reporter: require('good-console')
+        args: config.log
+      ]
+  },{
+    register: require('./db')
+    options: require('../models')
+  },{
+    register: require('./errors')
+  }]
 #
-# Database connection
+# Remaining plugins from ../config
 #
-plugins.push
-  register: require('./db')
-  options: require('../models')
-
-# Remaining plugins don't require options
-#
-for plugin in server.settings.app.plugins
+for plugin in config.plugins
   console.log 'plugin: '+plugin
   plugins.push register: require(plugin)
 
