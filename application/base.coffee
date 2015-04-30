@@ -68,6 +68,15 @@ exports.register = (server, options, next) ->
               topButton: 'Home'
 
     }
+
+    {
+      method: ['GET','POST']
+      path: '/katra'
+      config:
+        handler:
+          view: template: 'katra'
+
+    }
   ]
   next()
   return
