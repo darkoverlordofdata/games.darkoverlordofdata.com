@@ -15,7 +15,7 @@ exports.register = (server, options, next) ->
   server.route [
     {
       #
-      # Display on FaceBook?
+      # FaceBook iframe canvas
       #
       method: 'POST'
       path: '/game/{name}'
@@ -26,14 +26,14 @@ exports.register = (server, options, next) ->
     }
     {
       #
-      # Display it here
+      # Run in iframe
       #
       method: 'GET' # Show in an iframe
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
           server.methods.find 'Game', {where: slug:request.params.name}, (err, game) ->
-            reply.view 'play', game: game
+            reply.view 'play_game', game: game
 
     }
     {
