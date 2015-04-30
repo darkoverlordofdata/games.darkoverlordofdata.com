@@ -18,7 +18,8 @@ exports.register = (server, options, next) ->
       path: "/game/{name}"
       config:
         handler: (request, reply) ->
-          reply.redirect request.params.name+'/'+request.params.name+'.html'
+#          reply.redirect request.params.name+'/'+request.params.name+'.html'
+          reply.redirect 'https://darkoverlordofdata.com/'+request.params.name+'/'+request.params.name+'.html'
           return
 
     }

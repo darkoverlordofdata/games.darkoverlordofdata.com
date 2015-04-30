@@ -3,28 +3,22 @@
 #
 Hapi = require('hapi')
 
-config = require('../config')
-
-#cache =
-#  engine: require('catbox-memcached')
-#  location: 'localhost:11211'
-
-module.exports = server = new Hapi.Server(app: config) #, cache: cache)
+module.exports = server = new Hapi.Server(app: require('../config')) #, cache: require('./cache'))
 
 #
 # Setup the server with a host and port
 #
 server.connection
-  port: config.port
-  host: config.host
+  port: server.settings.app.port
+  host: server.settings.app.host
 
 #
 # Set the default views engine and folder
 #
 server.views
-  path: config.views
+  path: server.settings.app.views
   engines:
-    tpl: require('liquid.coffee').setPath(config.views)
+    tpl: require('liquid.coffee').setPath(server.settings.app.views)
 
 #
 # Load all plugins:
@@ -35,18 +29,18 @@ plugins = [{
       opsInterval: 5000
       reporters: [
         reporter: require('good-console')
-        args: config.log
+        args: server.settings.app.log
       ]
   },{
     register: require('./db')
-    options: require('../models')
+    options: require('../db/models')
   },{
     register: require('./errors')
   }]
 #
 # Remaining plugins from ../config
 #
-for plugin in config.plugins
+for plugin in server.settings.app.plugins
   console.log 'plugin: '+plugin
   plugins.push register: require(plugin)
 
