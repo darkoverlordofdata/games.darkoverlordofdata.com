@@ -104,7 +104,7 @@ exports.register = (server, options, next) ->
 
       leaderboard.scoreFor request.params.user, (currentScore) ->
         leaderboard.rankMemberIf highScore, request.params.user, parseInt(request.params.value,10), currentScore, null, (member) ->
-          reply.redirect '/rank/'+request.params.leaderboard
+          reply.redirect '/leaderboard/'+request.params.leaderboard
 
 
   next()
