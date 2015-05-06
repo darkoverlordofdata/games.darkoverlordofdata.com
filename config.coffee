@@ -149,7 +149,7 @@ module.exports =
   grant:
     server:
       protocol: if PROD then 'https' else 'http'
-      host: if PROD then process.env.OPENSHIFT_NODEJS_IP else 'bosco.com:3000'
+      host: if PROD then 'https://games.darkoverlordofdata.com' else 'bosco.com:3000'
       transport: 'session'
     facebook:
       key: process.env.FACEBOOK_APPID

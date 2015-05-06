@@ -16,7 +16,7 @@ if process.env.rediscloud_39a84?
   redis =
     host: rediscloud.hostname
     port: rediscloud.port
-    auth_pass: rediscloud.password
+    options: auth_pass: rediscloud.password
 else
   redis =
     host: 'localhost'
