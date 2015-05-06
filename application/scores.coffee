@@ -79,6 +79,8 @@ exports.register = (server, options, next) ->
     path: '/leaderboard/{name}'
     handler: (request, reply) ->
       leaderboard = new Leaderboard(request.params.name, server.settings.app.leaderboard, redis)
+      leaderboard.redisConnection.auth(redis.pass) if redis.pass?
+
       leaderboard.leaders 1, withMemberData: false, (leaders) ->
         reply.view 'leaderboard',
           name: request.params.name
@@ -98,33 +100,11 @@ exports.register = (server, options, next) ->
     path: '/score/{leaderboard}/{user}/{value}'
     handler: (request, reply) ->
       leaderboard = new Leaderboard(request.params.leaderboard, server.settings.app.leaderboard, redis)
+      leaderboard.redisConnection.auth(redis.pass) if redis.pass?
 
       leaderboard.scoreFor request.params.user, (currentScore) ->
         leaderboard.rankMemberIf highScore, request.params.user, parseInt(request.params.value,10), currentScore, null, (member) ->
           reply.redirect '/rank/'+request.params.leaderboard
-
-  ###
-   * Update the score database
-   * the session remembers the token from login
-   *
-  ###
-  server.route
-    method: 'GET'
-    path: '/score/{leaderboard}/{value}'
-    handler: (request, reply) ->
-      grant = request.session.get('grant')
-      return reply('try again') unless grant.response?
-      facebook.query()
-      .get('me')
-      .auth(grant.response.access_token)
-      .request (err, res, user) ->
-
-        leaderboard = new Leaderboard(request.params.leaderboard, server.settings.app.leaderboard, redis)
-
-        leaderboard.rankMember user.id, parseInt(request.params.value,10), (member) ->
-          reply(JSON.stringify(member))
-
-
 
 
   next()
