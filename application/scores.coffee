@@ -80,6 +80,11 @@ exports.register = (server, options, next) ->
     method: 'GET'
     path: '/leaderboard/{name}'
     handler: (request, reply) ->
+
+      console.log JSON.stringify(redis)
+      console.log 'hasOwnProperty = '+redis.hasOwnProperty('auth_pass')
+      console.log 'auth_pass = '+redis.options?.auth_pass
+
       leaderboard = new Leaderboard(request.params.name, server.settings.app.leaderboard, redis)
       #      leaderboard.redisConnection.auth(redis.pass) if redis.pass?
 
