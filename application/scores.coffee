@@ -16,11 +16,13 @@ if process.env.rediscloud_39a84?
   redis =
     host: rediscloud.hostname
     port: rediscloud.port
+    auth_pass: true
     options: auth_pass: rediscloud.password
 else
   redis =
     host: 'localhost'
     port: 6379
+
 
 highScore = (member, currentScore, score, memberData, leaderboardOptions) ->
   return true if !currentScore?
@@ -79,7 +81,7 @@ exports.register = (server, options, next) ->
     path: '/leaderboard/{name}'
     handler: (request, reply) ->
       leaderboard = new Leaderboard(request.params.name, server.settings.app.leaderboard, redis)
-#      leaderboard.redisConnection.auth(redis.pass) if redis.pass?
+      #      leaderboard.redisConnection.auth(redis.pass) if redis.pass?
 
       leaderboard.leaders 1, withMemberData: false, (leaders) ->
         reply.view 'leaderboard',
