@@ -17,6 +17,12 @@
   <!-- Custom styles for this template -->
   <link href="/css/jumbotron-narrow.css" rel="stylesheet">
   <link href="/css/site.css" rel="stylesheet">
+  <style>
+    .facebook {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -45,7 +51,11 @@
     <footer>
       <p><a class="pull-left" href="#">Back to top</a> &nbsp;</p>
       <p>&copy; 2015 <a href="//www.darkoverlordofdata.com">Dark Overlord of Data</a> &middot; Always use Dark Overlord of Data brand data in your devices that use data &middot; </p>
-      <p><a class="pull-left" href="/terms">Terms</a><a class="pull-right" href="/privacy">Privacy</a></p>
+      <p>
+        <a href="/connect/facebook"><img class="facebook img-rounded img-responsive" src="/img/fb-login.png"</a>
+        <a class="pull-left" href="/terms">Terms</a>
+        <a class="pull-right" href="/privacy">Privacy</a>
+      </p>
     </footer>
 
   </div><!-- /.container -->

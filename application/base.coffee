@@ -16,6 +16,7 @@ exports.register = (server, options, next) ->
       method: 'GET'
       path: '/'
       config:
+        plugins: 'hapi-auth-cookie': redirectTo: false
         id: 'index'
         handler: (request, reply) ->
           server.methods.findAll 'Katra', (err, katras) ->

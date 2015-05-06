@@ -2,17 +2,20 @@
 {% block content %}
 
 <!-- START THE FEATURETTES -->
-    {% for g in games %}
+    {% for game in games %}
         <div class="row featurette">
             <div class="col-md-7">
-                <h2 class="featurette-heading"><a href="/game/{{ g.slug }}">Asteroids</a></h2>
-                <p class="lead">{{ g.description }}
+                <h2 class="featurette-heading"><a href="/game/{{ game.slug }}">Asteroids</a></h2>
+                <p class="lead">{{ game.description }}
                     <!--<img src="img/nw.png">-->
-                    <!--<a href="/nw/{{ g.slug }}">Download</a> packaged for <a href="http://nwjs.io/">Node WebKit</a>-->
+                    <!--<a href="/nw/{{ game.slug }}">Download</a> packaged for <a href="http://nwjs.io/">Node WebKit</a>-->
+                </p>
+                <p>
+                    <a href="/leaderboard/{{ game.slug }}">Leaderboard</a>
                 </p>
             </div>
-            <div class="col-md-5"><a href="/game/{{ g.slug }}">
-                <img class="featurette-image img-responsive img-rounded center-block" src="assets/{{ g.slug }}.png" alt="{{ g.name }}">
+            <div class="col-md-5"><a href="/game/{{ game.slug }}">
+                <img class="featurette-image img-responsive img-rounded center-block" src="assets/{{ game.slug }}.png" alt="{{ game.name }}">
             </a>
             </div>
         </div>
@@ -34,14 +37,14 @@
 
     <hr class="featurette-divider">
 
-    {% for k in katras %}
+    {% for katra in katras %}
         <div class="row featurette">
             <div class="col-md-7 {% cycle 'col-md-push-5', ''  %}">
-                <h2 class="featurette-heading"><a href="/katra/{{ k.slug }}">{{ k.title }}.</a></h2>
-                <p class="lead">{{ k.description }}</p>
+                <h2 class="featurette-heading"><a href="/katra/{{ katra.slug }}">{{ katra.title }}.</a></h2>
+                <p class="lead">{{ katra.description }}</p>
             </div>
-            <div class="col-md-5 {% cycle 'col-md-pull-7', '' %}"><a href="/katra/{{ k.slug }}">
-                <img class="featurette-image img-responsive img-rounded center-block" src="/assets/{{ k.slug }}.png" alt="Generic placeholder image">
+            <div class="col-md-5 {% cycle 'col-md-pull-7', '' %}"><a href="/katra/{{ katra.slug }}">
+                <img class="featurette-image img-responsive img-rounded center-block" src="/assets/{{ katra.slug }}.png" alt="Generic placeholder image">
             </a>
             </div>
         </div>

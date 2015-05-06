@@ -1,5 +1,16 @@
+###
+
+    _____                   ____      ___
+   / ___/__ ___ _  ___ ____/ __ \____/ _ \___ ___ _  ___ _
+  / (_ / _ `/  ' \/ -_)___/ /_/ /___/ , _/ _ `/  ' \/ _ `/
+  \___/\_,_/_/_/_/\__/    \____/   /_/|_|\_,_/_/_/_/\_,_/
+
+
+
+###
+##
 #
-# Games server
+#
 #
 Hapi = require('hapi')
 
@@ -20,22 +31,35 @@ server.views
   engines:
     tpl: require('liquid.coffee').setPath(server.settings.app.views)
 
+
 #
-# Load all plugins:
+# Standard plugins:
+#
+#   good logging
+#   sequelize data models
+#   error handling
+#   sessions
+#   oauth2
 #
 plugins = [{
     register: require('good')
     options:
-      opsInterval: 5000
+      opsInterval: server.settings.app.opsInterval
       reporters: [
         reporter: require('good-console')
         args: server.settings.app.log
       ]
-  },{
+  }, {
     register: require('./db')
     options: require('../db/models')
-  },{
+  }, {
     register: require('./errors')
+  }, {
+    register: require('yar')
+    options: server.settings.app.yar
+  }, {
+    register: new (require('grant-hapi'))
+    options: server.settings.app.grant
   }]
 #
 # Remaining plugins from ../config
@@ -48,10 +72,11 @@ for plugin in server.settings.app.plugins
 # Register plugins and start the server
 #
 server.register plugins, ->
+
   server.start ->
     #
     # Log to the console the host and port info
     #
     console.log 'Game*O*Rama'
-    console.log 'Server started at: ' + server.info.uri
+    console.log 'Started at: ' + server.info.uri
 

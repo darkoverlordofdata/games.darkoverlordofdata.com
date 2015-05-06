@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+</head>
+<body>
+{
+"rules":
+{
+".read": true,
+".write": "auth.uid === 'admin'"
+}
+}
+
+
+</body>
+<script>
+    var leaderBoard = new Firebase('https://d16a-asteroids.firebaseio.com/');
+
+//    leaderBoard.authWithCustomToken('')
+    leaderBoard.set({
+        "facebook": {                   //  provider
+            "816144091800924": {        //  usedId
+                "887669707958104": {    //  appId
+                    "p1": 42,           //  period1 score
+                    "p2": 42,           //  period2 score
+                    "p3": 42            //  period3 score
+                }
+            }
+        }
+    });
+
+</script>
+</html>

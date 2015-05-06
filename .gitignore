@@ -48,5 +48,5 @@ crashlytics.properties
 crashlytics-build.properties
 
 
-
+env.sh
 node_modules

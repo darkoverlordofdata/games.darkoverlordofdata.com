@@ -8,26 +8,33 @@
     "npm": "1.2.x"
   },
   "dependencies": {
+    "catbox-memcached": "~1.1.1",
+    "coffee-script": "~1.9.2",
+    "fb": "^0.7.0",
     "good": "^5.1.0",
     "good-console": "^4.0.0",
+    "grant-hapi": "^3.2.0",
     "hapi": "^8.0.0",
     "hapi-assets": "~0.3.0",
     "hapi-cache-buster": "~0.4.0",
     "hapi-named-routes": "~0.3.0",
-    "coffee-script": "~1.9.2",
     "liquid.coffee": "darkoverlordofdata/liquid.coffee",
     "lodash": "~3.7.0",
-    "sqlite3": "~3.0.5",
+    "purest": "^1.1.4",
+    "sequelize": "~2.1.0",
+    "sqlite3": "~3.0.4",
+    "yar": "^3.0.3",
     "zip-dir": "~1.0.0",
-    "catbox-memcached": "~1.1.1",
-    "sequelize": "~2.1.0"
+    "request": "~2.55.0",
+    "hapi-mongodb": "~3.0.0",
+    "agoragames-leaderboard": "~2.1.0"
   },
   "devDependencies": {
     "tap": "^0.4.13"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ryanj/hapi-base.git"
+    "url": "https://github.com/darkoverlordofdata/games.darkoverlordofdata.com.git"
   },
   "scripts": {
     "start": "node server.js"
