@@ -80,11 +80,6 @@ exports.register = (server, options, next) ->
     method: 'GET'
     path: '/leaderboard/{name}'
     handler: (request, reply) ->
-#
-#      console.log JSON.stringify(redis)
-#      console.log 'hasOwnProperty = '+redis.hasOwnProperty('auth_pass')
-#      console.log 'auth_pass = '+redis.options?.auth_pass
-#
       leaderboard = new Leaderboard(request.params.name, server.settings.app.leaderboard, redis)
       leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
 
@@ -92,6 +87,8 @@ exports.register = (server, options, next) ->
         reply.view 'leaderboard',
           name: request.params.name
           leaderboard: leaders
+        console.log 'disconnect /leaderboard/{name}'
+        leaderboard.disconnect()
 
 
 
@@ -112,6 +109,8 @@ exports.register = (server, options, next) ->
       leaderboard.scoreFor request.params.user, (currentScore) ->
         leaderboard.rankMemberIf highScore, request.params.user, parseInt(request.params.value,10), currentScore, null, (member) ->
           reply.redirect '/leaderboard/'+request.params.leaderboard
+          console.log 'disconnect /score/{leaderboard}/{user}/{value}'
+          leaderboard.disconnect()
 
 
   next()

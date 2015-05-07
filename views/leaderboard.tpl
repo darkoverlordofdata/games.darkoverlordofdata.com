@@ -3,7 +3,7 @@
 
 <!-- START THE FEATURETTES -->
 <div class="row featurette">
-  <h2 class="featurette-heading">Scores for {{ name }}</h2>
+  <h2 class="featurette-heading">Leaderboard: {{ name }}</h2>
   <table class="table">
     <thead>
     <tr>
