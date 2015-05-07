@@ -53,6 +53,7 @@ exports.register = (server, options, next) ->
   scores.on 'value', (dataSnapshot) ->
 
     leaderboard = new Leaderboard('asteroids', config.leaderboard, redis)
+    leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
     o = dataSnapshot.val()
     if o isnt null
       console.log o
