@@ -11,7 +11,7 @@ module.exports =
         slug: 'asteroids'
         url: 'https://darkoverlordofdata.com/asteroids'
         author: 'darkoverlordofdata'
-        description: 'Classic Asteroids using modern physics'
+        description: 'Classic Space Rocks using modern physics'
         version: '0.0.1'
         icon: 'asteroids36.png'
         main: 'asteroids.html'
