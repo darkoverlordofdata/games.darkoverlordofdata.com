@@ -10,6 +10,7 @@ fs = require('fs')
 path = require('path')
 http = require('request')
 Leaderboard = require('agoragames-leaderboard')
+config = require('../config')
 
 if process.env.rediscloud_39a84?
   rediscloud = JSON.parse(process.env.rediscloud_39a84)
@@ -38,6 +39,29 @@ APP_ID = '887669707958104'
 
 exports.register = (server, options, next) ->
 
+  Firebase = require('firebase')
+  scores = new Firebase('https://asteroids-d16a.firebaseio.com/scores/')
+  scores.authWithCustomToken process.env.ASTEROIDS_D16A, (err, auth) ->
+    if err
+      console.log 'Error connecting to asteroids'
+      console.log err
+    else
+      console.log 'Authorized to update asteroids'
+      console.log auth
+
+
+  scores.on 'value', (dataSnapshot) ->
+
+    leaderboard = new Leaderboard('asteroids', config.leaderboard, redis)
+    o = dataSnapshot.val()
+    if o isnt null
+      console.log o
+      for k, v of o
+        console.log 'Key: '+k
+        console.log v
+        leaderboard.scoreFor v.id, (currentScore) ->
+          leaderboard.rankMemberIf highScore, v.id, parseInt(v.score,10), currentScore, null, (member) ->
+            leaderboard.disconnect()
 
 
   ###
@@ -111,6 +135,18 @@ exports.register = (server, options, next) ->
           reply.redirect '/leaderboard/'+request.params.leaderboard
           console.log 'disconnect /score/{leaderboard}/{user}/{value}'
           leaderboard.disconnect()
+
+
+
+
+  server.route
+    method: 'POST'
+    path: '/score/asteroids'
+    handler: (request, reply) ->
+      grant = request.session.get('grant')
+      console.log grant.response
+      reply(JSON.stringify(grant.response))
+
 
 
   next()
