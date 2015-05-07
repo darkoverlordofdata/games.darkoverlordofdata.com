@@ -39,32 +39,32 @@ APP_ID = '887669707958104'
 
 exports.register = (server, options, next) ->
 
-  Firebase = require('firebase')
-  scores = new Firebase('https://asteroids-d16a.firebaseio.com/scores/')
-  scores.authWithCustomToken process.env.ASTEROIDS_D16A, (err, auth) ->
-    if err
-      console.log 'Error connecting to asteroids'
-      console.log err
-    else
-      console.log 'Authorized to update asteroids'
-      console.log auth
-
-
-  scores.on 'value', (dataSnapshot) ->
-
-    leaderboard = new Leaderboard('asteroids', config.leaderboard, redis)
-    leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
-    o = dataSnapshot.val()
-    if o isnt null
-      console.log o
-      for k, v of o
-        console.log 'Key: '+k
-        console.log v
-        leaderboard.scoreFor v.id, (currentScore) ->
-          leaderboard.rankMemberIf highScore, v.id, parseInt(v.score,10), currentScore, null, (member) ->
-            leaderboard.disconnect()
-
-
+#  Firebase = require('firebase')
+#  scores = new Firebase('https://asteroids-d16a.firebaseio.com/scores/')
+#  scores.authWithCustomToken process.env.ASTEROIDS_D16A, (err, auth) ->
+#    if err
+#      console.log 'Error connecting to asteroids'
+#      console.log err
+#    else
+#      console.log 'Authorized to update asteroids'
+#      console.log auth
+#
+#
+#  scores.on 'value', (dataSnapshot) ->
+#
+#    leaderboard = new Leaderboard('asteroids', config.leaderboard, redis)
+#    leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
+#    o = dataSnapshot.val()
+#    if o isnt null
+#      console.log o
+#      for k, v of o
+#        console.log 'Key: '+k
+#        console.log v
+#        leaderboard.scoreFor v.id, (currentScore) ->
+#          leaderboard.rankMemberIf highScore, v.id, parseInt(v.score,10), currentScore, null, (member) ->
+#            leaderboard.disconnect()
+#
+#
   ###
    *
    * /login/callback
