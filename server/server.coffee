@@ -50,17 +50,12 @@ plugins = [{
         args: server.settings.app.log
       ]
   }, {
-    register: require('./firebase')
-#    register: require('./db')
-#    options: require('../db/models')
+    register: require('./db')
   }, {
     register: require('./errors')
   }, {
     register: require('yar')
     options: server.settings.app.yar
-#  }, {
-#    register: new (require('grant-hapi'))
-#    options: server.settings.app.grant
   }]
 #
 # Remaining plugins from ../config

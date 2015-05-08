@@ -140,28 +140,6 @@ module.exports =
 
   #|
   #|--------------------------------------------------------------------------
-  #| Grant Authorization
-  #|--------------------------------------------------------------------------
-  #|
-  #| Grant providers
-  #|
-  #|
-  grant:
-    server:
-      protocol: if PROD then 'https' else 'http'
-      host: if PROD then 'games.darkoverlordofdata.com' else 'bosco.com:3000'
-      transport: 'session'
-    facebook:
-      key: process.env.FACEBOOK_APPID
-      secret: process.env.FACEBOOK_APPSECRET
-      callback: '/login/callback'
-      scope: [
-        'user_about_me'
-        'publish_actions'
-      ]
-
-  #|
-  #|--------------------------------------------------------------------------
   #| Yar Session Software
   #|--------------------------------------------------------------------------
   #|
@@ -171,7 +149,7 @@ module.exports =
   yar:
     cookieOptions:
       password: process.env.SECRET
-      isSecure: false
+      isSecure: PROD
       clearInvalid: true
 
 
