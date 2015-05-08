@@ -58,9 +58,9 @@ plugins = [{
   }, {
     register: require('yar')
     options: server.settings.app.yar
-  }, {
-    register: new (require('grant-hapi'))
-    options: server.settings.app.grant
+#  }, {
+#    register: new (require('grant-hapi'))
+#    options: server.settings.app.grant
   }]
 #
 # Remaining plugins from ../config

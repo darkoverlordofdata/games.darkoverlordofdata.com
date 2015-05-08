@@ -13,7 +13,7 @@
 exports.register = (server, options, next) ->
 
   ###
-   * Set the routes
+   * Set up the Katra routes
   ###
   server.route [
     {

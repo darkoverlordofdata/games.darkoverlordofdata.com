@@ -15,7 +15,7 @@ Firebase = require("firebase")
 
   orm = require('./firebase-orm')
 
-  db = orm('http://myblog.firebaseio.com',
+  db = orm('http://INSTANCE.firebaseio.com',
     process.env.FIREBASE_AUTH, [ 'posts', 'comments' ])
 
   @param fbPath
@@ -29,7 +29,7 @@ module.exports = (fbPath, auth, types) ->
   fbRoot = new Firebase(fbPath)
   db = data: {}
   data = db.data
-  fbRoot.authWithCustomToken auth, (err, a) ->
+  fbRoot.authWithCustomToken auth, (err) ->
     throw err if err
 
   types.forEach (type) ->

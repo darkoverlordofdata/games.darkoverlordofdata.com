@@ -13,7 +13,7 @@ exports.register = (server, options, next) ->
   zipdir = require('zip-dir')
 
   ###
-   * Set the routes
+   * Set the Games routes
   ###
   server.route [
     {
@@ -26,9 +26,6 @@ exports.register = (server, options, next) ->
         handler: (request, reply) ->
           server.methods.find 'Game', slug:request.params.name, (err, game) ->
             reply.redirect game.url+'/'+game.main
-#
-#
-#          reply.redirect 'https://darkoverlordofdata.com/'+request.params.name+'/'+request.params.name+'.html'
 
     }
     {

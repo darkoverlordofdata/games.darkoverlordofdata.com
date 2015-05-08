@@ -2,13 +2,27 @@
 # Db operations
 #
 EXPIRES = 60000 # cache expiry
-
+#
+# wow - moving to firebase replaced:
+#
+# sequelize
+# sqlite3
+# fb
+# purest
+# grant-hapi
+# request
+#
+# plus a bunch of complexity with uri callbacks
+#
 exports.register = (server, options, next) ->
 
   Firebase = require("firebase")
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
   dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
+
+  errorHandler = (err) ->
+    throw err if err
 
   ###
    * Server Method Find
@@ -23,7 +37,7 @@ exports.register = (server, options, next) ->
     #
     options:
       cache: expiresIn: EXPIRES
-      generateKey: (model, what) -> model+JSON.stringify(what)
+      generateKey: (model, where) -> model+JSON.stringify(where)
 
     #
     # Find by criteria
@@ -31,8 +45,7 @@ exports.register = (server, options, next) ->
     method: (model, where, next) ->
 
       db = new Firebase(dbRoot+model.toLowerCase())
-      db.authWithCustomToken process.env.FIREBASE_AUTH, (err, a) ->
-        throw err if err
+      db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
 
       field = Object.keys(where)[0]
       value = where[field]
@@ -61,13 +74,10 @@ exports.register = (server, options, next) ->
     method: (model, next) ->
 
       db = new Firebase(dbRoot+model.toLowerCase())
-      db.authWithCustomToken process.env.FIREBASE_AUTH, (err, a) ->
-        throw err if err
-
+      db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
       db.on 'value', (data) ->
         db.off()
-        rows = (val for key, val of data.val())
-        next(null, rows)
+        next(null, (val for key, val of data.val()))
 
   next()
   return

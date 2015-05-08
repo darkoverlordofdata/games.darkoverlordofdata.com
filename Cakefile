@@ -18,7 +18,7 @@ fs = require('fs')
 util = require 'util'
 {exec} = require "child_process"
 {nfcall} = require 'q'
-orm = require('./firebase-orm')
+orm = require('./fire-forge')
 
 task "orm:dev", "make db", ->
 
