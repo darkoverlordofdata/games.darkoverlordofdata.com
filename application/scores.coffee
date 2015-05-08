@@ -4,6 +4,7 @@
 #
 Firebase = require('firebase')
 Leaderboard = require('agoragames-leaderboard')
+scoring = require('./lib/scoring')
 
 if process.env.rediscloud_39a84?
   rediscloud = JSON.parse(process.env.rediscloud_39a84)
@@ -17,32 +18,65 @@ else
     host: 'localhost'
     port: 6379
 
-###
- * Select highest score
-###
-highScore = (member, currentScore, score, memberData, leaderboardOptions) ->
-  return true if !currentScore?
-  return true if score > currentScore
-  false
-
-###
- * Select lowest score
-###
-lowScore = (member, currentScore, score, memberData, leaderboardOptions) ->
-  return true if !currentScore?
-  return true if score < currentScore
-  false
-
-leaderboards = [
-  {
-    name: 'asteroids'
-    url: 'https://asteroids-d16a.firebaseio.com/scores/'
-    auth: 'ASTEROIDS_D16A'
-    bestScore: highScore
-  }
-]
-
 exports.register = (server, options, next) ->
+
+  ###
+   Initialize the leaderboard queue for each game
+  ###
+  server.methods.findAll 'Games', (err, games) ->
+    games.forEach (game) ->
+      return unless game.queue?       # is there a queue url?
+      return unless game.leaderboard  # is it active?
+
+      bestScore = scoring[game.scoring]
+      #
+      # Connect to the queue
+      #
+      db = new Firebase(game.queue)
+
+      #
+      # Authorize access
+      #
+      db.authWithCustomToken process.env[game.token], (err, auth) ->
+        if err
+          console.log 'Error connecting to '+game.name
+          console.log err
+        else
+          console.log 'Authorized to update '+game.name+' leaderboard'
+
+      #
+      # Wait for a score in the queue
+      #
+      db.on 'value', (msg) ->
+        return unless msg.val()?
+        console.log msg.val()
+
+        #
+        # Create the redis adapter for this leaderboard
+        #
+        do (leaderboard = new Leaderboard(game.name, server.settings.app.leaderboard, redis)) ->
+
+          #
+          # Authorize the redis connection
+          #
+          leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
+
+          # copy values to a list
+          vals = (val for key, val of msg.val())
+
+          #
+          # Post each score to the leaderboard
+          #
+          vals.forEach (val, index) ->
+            leaderboard.scoreFor val.id, (currentScore) ->
+              leaderboard.rankMemberIf bestScore, val.id, parseInt(val.score,10), currentScore, null, (member) ->
+                #
+                # if that was the last one, them clean up
+                #
+                if index is vals.length-1
+                  leaderboard.disconnect()
+                  msg.ref().remove();
+
 
   ###
    *
@@ -64,53 +98,6 @@ exports.register = (server, options, next) ->
           leaderboard: leaders
         console.log 'disconnect /leaderboard/{name}'
         leaderboard.disconnect()
-
-  #
-  # Start Leaderboard message processing
-  #
-  leaderboards.forEach (board) ->
-
-    db = new Firebase(board.url)
-
-    #
-    # Authorize the firebase connection
-    #
-    db.authWithCustomToken process.env[board.auth], (err, auth) ->
-      if err
-        console.log 'Error connecting to '+board.name
-        console.log err
-      else
-        console.log 'Authorized to update '+board.name+' leaderboard'
-
-    #
-    # Wait for scores
-    #
-    db.on 'value', (snap) ->
-      return unless snap.val()?
-      console.log snap.val()
-
-      #
-      # Create the redis adapter for this leaderboard
-      #
-      do (leaderboard = new Leaderboard(board.name, server.settings.app.leaderboard, redis)) ->
-
-        #
-        # Authorize the redis connection
-        #
-        leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
-
-        # copy to a list
-        vals = (val for key, val of snap.val())
-
-        #
-        # Post each score to the leaderboard
-        #
-        vals.forEach (val, index) ->
-          leaderboard.scoreFor val.id, (currentScore) ->
-            leaderboard.rankMemberIf board.bestScore, val.id, parseInt(val.score,10), currentScore, null, (member) ->
-              if index is vals.length-1
-                leaderboard.disconnect()
-                snap.ref().remove();
 
 
   next()

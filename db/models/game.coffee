@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) ->
     name: DataTypes.STRING
     slug: DataTypes.STRING
     url: DataTypes.STRING
+    leaderboard: DataTypes.BOOLEAN
+    queue: DataTypes.STRING
+    token: DataTypes.STRING
+    scoring: DataTypes.STRING
     author: DataTypes.STRING
     description: DataTypes.STRING
     version: DataTypes.STRING

@@ -20,6 +20,18 @@ module.exports =
       url:
         type: Sequelize.STRING
 
+      leaderboard:
+        type: Sequelize.BOOLEAN
+
+      queue:
+        type: Sequelize.STRING
+
+      token:
+        type: Sequelize.STRING
+
+      scoring:
+        type: Sequelize.STRING
+
       author:
         type: Sequelize.STRING
 
