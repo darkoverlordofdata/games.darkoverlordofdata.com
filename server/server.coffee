@@ -50,8 +50,9 @@ plugins = [{
         args: server.settings.app.log
       ]
   }, {
-    register: require('./db')
-    options: require('../db/models')
+    register: require('./firebase')
+#    register: require('./db')
+#    options: require('../db/models')
   }, {
     register: require('./errors')
   }, {
