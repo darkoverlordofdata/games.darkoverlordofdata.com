@@ -12,6 +12,9 @@ exports.register = (server, options, next) ->
   path = require('path')
   zipdir = require('zip-dir')
 
+  ###
+   * Set the routes
+  ###
   server.route [
     {
       #
@@ -21,7 +24,11 @@ exports.register = (server, options, next) ->
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
-          reply.redirect 'https://darkoverlordofdata.com/'+request.params.name+'/'+request.params.name+'.html'
+          server.methods.find 'Game', slug:request.params.name, (err, game) ->
+            reply.redirect game.url+'/'+game.main
+#
+#
+#          reply.redirect 'https://darkoverlordofdata.com/'+request.params.name+'/'+request.params.name+'.html'
 
     }
     {
@@ -32,7 +39,7 @@ exports.register = (server, options, next) ->
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Game', {where: slug:request.params.name}, (err, game) ->
+          server.methods.find 'Game', slug:request.params.name, (err, game) ->
             reply.view 'play_game', game: game
 
     }

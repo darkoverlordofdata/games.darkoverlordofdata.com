@@ -26,16 +26,14 @@ exports.register = (server, options, next) ->
       generateKey: (model, what) -> model+JSON.stringify(what)
 
     #
-    # Find by criterea
+    # Find by criteria
     #
-    method: (model, what, next) ->
+    method: (model, where, next) ->
 
       db = new Firebase(dbRoot+model.toLowerCase())
       db.authWithCustomToken process.env.FIREBASE_AUTH, (err, a) ->
         throw err if err
 
-      # where: field: value
-      where = what.where
       field = Object.keys(where)[0]
       value = where[field]
 
