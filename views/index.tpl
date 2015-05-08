@@ -5,7 +5,7 @@
     {% for game in games %}
         <div class="row featurette">
             <div class="col-md-7">
-                <h2 class="featurette-heading"><a href="/game/{{ game.slug }}">{{ game.description }}</a></h2>
+                <h2 class="featurette-heading"><a href="/game/{{ game.slug }}">{{ game.name }}</a></h2>
                 <p class="lead">{{ game.description }}
                     <!--<img src="img/nw.png">-->
                     <!--<a href="/nw/{{ game.slug }}">Download</a> packaged for <a href="http://nwjs.io/">Node WebKit</a>-->
