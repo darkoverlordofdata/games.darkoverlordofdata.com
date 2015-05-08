@@ -23,7 +23,8 @@ exports.register = (server, options, next) ->
   ###
    Initialize the leaderboard queue for each game
   ###
-  server.methods.findAll 'Games', (err, games) ->
+  server.methods.findAll 'Game', (err, games) ->
+
     games.forEach (game) ->
       return unless game.queue?       # is there a queue url?
       return unless game.leaderboard  # is it active?
