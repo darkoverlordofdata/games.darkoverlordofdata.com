@@ -1,6 +1,7 @@
-#
-# Main routes:
-#
+###
+ * Basic routes
+###
+##
 #   /
 #   /about
 #   /terms

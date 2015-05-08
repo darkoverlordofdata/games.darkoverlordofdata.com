@@ -1,6 +1,12 @@
+###
+ * DB operations
+###
+##
 #
-# Db operations
-#
+unless process.env.FIREBASE_AUTH
+  process.exit(console.log('Environment FIREBASE_AUTH not set'))
+
+
 EXPIRES = 60000 # cache expiry
 #
 # wow - moving to firebase replaced:

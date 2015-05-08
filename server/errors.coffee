@@ -1,3 +1,8 @@
+###
+ * Error handling
+###
+##
+#
 exports.register = (server, options, next) ->
 
   #

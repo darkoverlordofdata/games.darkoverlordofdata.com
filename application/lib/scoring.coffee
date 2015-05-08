@@ -1,3 +1,8 @@
+###
+ * Scoring strategies
+###
+##
+#
 
 module.exports = class Scoring
 

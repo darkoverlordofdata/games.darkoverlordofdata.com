@@ -1,40 +1,31 @@
-#+--------------------------------------------------------------------+
-#| Cakefile
-#+--------------------------------------------------------------------+
-#| Copyright DarkOverlordOfData (c) 2012
-#+--------------------------------------------------------------------+
-#|
-#| This file is a part of liquid.coffee
-#|
-#| liquid.coffee is free software; you can copy, modify, and distribute
-#| it under the terms of the MIT License
-#|
-#+--------------------------------------------------------------------+
-#
-# Cakefile
-#
+###
+  Cakefile
 
+###
 fs = require('fs')
 util = require 'util'
 {exec} = require "child_process"
 {nfcall} = require 'q'
-orm = require('./fire-forge')
+orm = require('./tools/fire-forge')
 
-task "orm:dev", "make db", ->
+task "orm:dev", "make db in development", ->
 
   dbinit orm('https://darkoverlordofdata.firebaseio.com/development',
     process.env.FIREBASE_AUTH, ['game', 'katra']), -> process.exit()
 
-task "orm:tst", "make db", ->
+task "orm:tst", "make db in test", ->
 
   dbinit orm('https://darkoverlordofdata.firebaseio.com/test',
     process.env.FIREBASE_AUTH, ['game', 'katra']), -> process.exit()
 
-task "orm:prd", "make db", ->
+task "orm:prd", "make db in production", ->
 
   dbinit orm('https://darkoverlordofdata.firebaseio.com/production',
     process.env.FIREBASE_AUTH, ['game', 'katra']), -> process.exit()
 
+###
+ * Initialize the selected environment
+###
 dbinit = (db, done) ->
   db.create 'game',
     active: true

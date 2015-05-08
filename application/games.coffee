@@ -1,7 +1,7 @@
-#
-# Run or download from the game public folder
-#
-# game routes:
+###
+ * HTML5 games
+###
+##
 #
 #   /{game}
 #   /ns/{game}

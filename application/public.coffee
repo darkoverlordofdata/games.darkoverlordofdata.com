@@ -1,5 +1,7 @@
-#
-# Public assets
+###
+ * Public assets
+###
+##
 #
 exports.register = (server, options, next) ->
 

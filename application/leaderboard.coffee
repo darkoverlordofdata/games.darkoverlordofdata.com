@@ -1,22 +1,12 @@
-#
-# scores routes:
-#
+###
+ * Leaderboard application
+###
+##
 #
 Firebase = require('firebase')
 Leaderboard = require('agoragames-leaderboard')
 scoring = require('./lib/scoring')
-
-if process.env.rediscloud_39a84?
-  rediscloud = JSON.parse(process.env.rediscloud_39a84)
-  redis =
-    host: rediscloud.hostname
-    port: rediscloud.port
-    auth_pass: rediscloud.password
-    options: auth_pass: rediscloud.password
-else
-  redis =
-    host: 'localhost'
-    port: 6379
+redis = require('./lib/redis')
 
 exports.register = (server, options, next) ->
 

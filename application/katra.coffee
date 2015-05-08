@@ -1,9 +1,7 @@
-#
-# Run application from gh-pages
-#
-#
-# katra routes:
-#
+###
+ * Katra games
+###
+##
 #   /run
 #   /sttr1
 #   /wumpus

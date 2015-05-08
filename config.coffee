@@ -1,16 +1,12 @@
-unless process.env.FACEBOOK_APPID
-  process.exit(console.log('Environment FACEBOOK_APPID not set'))
-unless process.env.FACEBOOK_APPSECRET
-  process.exit(console.log('Environment FACEBOOK_APPSECRET not set'))
-unless process.env.SECRET
-  process.exit(console.log('Environment SECRET not set'))
-unless process.env.FIREBASE_AUTH
-  process.exit(console.log('Environment FIREBASE_AUTH not set'))
-
-PROD = process.env.NODE_ENV is 'production'
-
+###
+ * Site configuration
+###
+##
+#
+#
 module.exports =
 
+  env: if process.env.NODE_ENV? then process.env.NODE_ENV else 'development'
   #|
   #|--------------------------------------------------------------------------
   #| Site Name
@@ -59,7 +55,7 @@ module.exports =
   #| The http port to use
   #|
   #|
-  port: if PROD then process.env.OPENSHIFT_NODEJS_PORT else 3000
+  port: process.env.OPENSHIFT_NODEJS_PORT ? 3000
 
 
   #|
@@ -73,16 +69,7 @@ module.exports =
   #| so that cookies will work in hapi.
   #|
   #|
-  host: if PROD then process.env.OPENSHIFT_NODEJS_IP else 'bosco.com'
-
-
-  score_auth: process.env.FIREBASE_AUTH
-
-  db_host: if PROD then process.env.OPENSHIFT_MONGODB_DB_HOST else 'localhost'
-  db_port: if PROD then process.env.OPENSHIFT_MONGODB_DB_PORT else 27017
-  db_user: if PROD then process.env.OPENSHIFT_MONGODB_DB_USER else `undefined`
-  db_pass: if PROD then process.env.OPENSHIFT_MONGODB_DB_PASS else `undefined`
-
+  host: process.env.OPENSHIFT_NODEJS_IP ? 'bosco.com'
 
   #|
   #|--------------------------------------------------------------------------
@@ -100,7 +87,7 @@ module.exports =
     error: "*"
   ]
 
-  opsInterval: if PROD then 15000 else 5000
+  opsInterval: if process.env.NODE_ENV is 'production' then 15000 else 5000
 
   #|
   #|--------------------------------------------------------------------------
@@ -117,7 +104,7 @@ module.exports =
     __dirname+'/application/base'
     __dirname+'/application/katra'
     __dirname+'/application/games'
-    __dirname+'/application/scores'
+    __dirname+'/application/leaderboard'
   ]
 
   #|
@@ -148,8 +135,8 @@ module.exports =
   #|
   yar:
     cookieOptions:
-      password: process.env.SECRET
-      isSecure: PROD
+      password: OPENSHIFT_SECRET_TOKEN ? 'iVY0kAZ1iSBWT48dG7y5dzBq2BZYUmG2'
+      isSecure: process.env.NODE_ENV is 'production'
       clearInvalid: true
 
 
