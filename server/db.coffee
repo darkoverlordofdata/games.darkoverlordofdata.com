@@ -27,6 +27,8 @@ exports.register = (server, options, next) ->
    * Triggers
   ###
   trigger = new Firebase(dbRoot+'trigger')
+
+  # trigger clear cache
   invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
   invalidate_cache.on 'value', (data) ->
     if data.val() is true

@@ -28,6 +28,7 @@ server.connection
 #
 server.views
   path: server.settings.app.views
+  defaultExtension: 'tpl'
   engines:
     tpl: require('liquid.coffee').setPath(server.settings.app.views)
 
