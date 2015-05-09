@@ -22,21 +22,18 @@ EXPIRES = 60000 # cache expiry
 #
 exports.register = (server, options, next) ->
 
-  Firebase = require('firebase')
-#  memjs = require('memjs')
-#  cache = memjs.Client.create()
-
+  Firebase = require("firebase")
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
   dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
 
-#  trigger = new Firebase(dbRoot+'trigger')
-#  invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
-#  invalidate_cache.on 'value', (value) ->
-#    trigger.update(invalidate_cache: 0)
-#
-#  errorHandler = (err) ->
-#    throw err if err
+  trigger = new Firebase(dbRoot+'trigger')
+  invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
+  invalidate_cache.on 'value', (value) ->
+    trigger.update(invalidate_cache: 0)
+
+  errorHandler = (err) ->
+    throw err if err
 
   ###
    * Server Method Find
@@ -58,27 +55,14 @@ exports.register = (server, options, next) ->
     #
     method: (model, where, next) ->
 
-#      cache_key = model+JSON.stringify(where)
-#
-#      cache.get cache_key, (err, val) ->
-#        if val?
-#          console.log '=========================='
-#          console.log 'got '+model+JSON.stringify(where)+'from cache'
-#          console.log String(val)
-#          console.log '=========================='
-#          return next(null, JSON.parse(val))
-#
-#        else
-        db = new Firebase(dbRoot+model.toLowerCase())
-        db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
+      db = new Firebase(dbRoot+model.toLowerCase())
+      db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
 
-        field = Object.keys(where)[0]
-        value = where[field]
+      field = Object.keys(where)[0]
+      value = where[field]
 
-        db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
-          data = model.val()
-#          cache.set(cache_key, JSON.stringify(data), null, 60)
-          next(null, data)
+      db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
+        next(null, model.val())
 
   ###
    * Server Method FindAll
@@ -100,22 +84,11 @@ exports.register = (server, options, next) ->
     #
     method: (model, next) ->
 
-#      cache.get model, (err, val) ->
-#        if val?
-#          console.log '=========================='
-#          console.log 'got '+model+'from cache'
-#          console.log String(val)
-#          console.log '=========================='
-#          return next(null, JSON.parse(val))
-#
-#        else
-        db = new Firebase(dbRoot+model.toLowerCase())
-        db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
-        db.on 'value', (data) ->
-          db.off()
-          data = (val for key, val of data.val())
-#          cache.set(model, JSON.stringify(data), null, 60)
-          return next(null, data)
+      db = new Firebase(dbRoot+model.toLowerCase())
+      db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
+      db.on 'value', (data) ->
+        db.off()
+        next(null, (val for key, val of data.val()))
 
   next()
   return
