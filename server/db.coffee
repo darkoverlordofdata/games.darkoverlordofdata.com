@@ -68,16 +68,17 @@ exports.register = (server, options, next) ->
           console.log '=========================='
           return next(null, JSON.parse(val))
 
-        db = new Firebase(dbRoot+model.toLowerCase())
-        db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
+        else
+          db = new Firebase(dbRoot+model.toLowerCase())
+          db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
 
-        field = Object.keys(where)[0]
-        value = where[field]
+          field = Object.keys(where)[0]
+          value = where[field]
 
-        db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
-          data = model.val()
-          cache.set(cache_key, JSON.stringify(data), null, 60)
-          next(null, data)
+          db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
+            data = model.val()
+            cache.set(cache_key, JSON.stringify(data), null, 60)
+            next(null, data)
 
   ###
    * Server Method FindAll
@@ -107,13 +108,14 @@ exports.register = (server, options, next) ->
           console.log '=========================='
           return next(null, JSON.parse(val))
 
-        db = new Firebase(dbRoot+model.toLowerCase())
-        db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
-        db.on 'value', (data) ->
-          db.off()
-          data = (val for key, val of data.val())
-          cache.set(model, JSON.stringify(data), null, 60)
-          return next(null, data)
+        else
+          db = new Firebase(dbRoot+model.toLowerCase())
+          db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
+          db.on 'value', (data) ->
+            db.off()
+            data = (val for key, val of data.val())
+            cache.set(model, JSON.stringify(data), null, 60)
+            return next(null, data)
 
   next()
   return
