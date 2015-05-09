@@ -12,8 +12,8 @@ else
 
 module.exports =
 
-  engine      : require('catbox-memcached')
-  location    : location
+#  engine      : require('catbox-memcached')
+#  location    : location
 
-#  engine: require('catbox-memory')
+  engine: require('catbox-memory')
 
