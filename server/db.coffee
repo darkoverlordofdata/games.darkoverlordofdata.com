@@ -3,7 +3,7 @@
  *
  * Data on FirebaseIO
  * Cache with MemCachier
- *  
+ *
 ###
 ##
 #
@@ -14,7 +14,7 @@ unless process.env.FIREBASE_AUTH?
 #
 exports.register = (server, options, next) ->
 
-  EXPIRES = 60 # cache expiry
+  EXPIRES = 0 # no expiration
   Firebase = require('firebase')
   memjs = require('memjs')
   cache = memjs.Client.create()
@@ -66,7 +66,6 @@ exports.register = (server, options, next) ->
 
       cache.get cache_key, (err, val) ->
 
-        console.log 'Found in CACHE: '+cache_key if val?
         return next(null, JSON.parse(val)) if val?
 
         db = new Firebase(dbRoot+model.toLowerCase())
@@ -97,7 +96,6 @@ exports.register = (server, options, next) ->
 
       cache.get cache_key, (err, val) ->
 
-        console.log 'Found in CACHE: '+cache_key if val?
         return next(null, JSON.parse(val)) if val?
 
         db = new Firebase(dbRoot+model.toLowerCase())
