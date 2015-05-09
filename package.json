@@ -19,6 +19,7 @@
     "hapi-cache-buster": "~0.4.0",
     "hapi-named-routes": "~0.3.0",
     "liquid.coffee": "~0.1.1",
+    "memjs": "^0.8.5",
     "yar": "^3.0.3",
     "zip-dir": "~1.0.0"
   },

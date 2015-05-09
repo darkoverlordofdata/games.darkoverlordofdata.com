@@ -23,22 +23,12 @@ exports.register = (server, options, next) ->
       #
       # Connect to the queue
       #
-      db = new Firebase(game.queue)
-
-      #
-      # Authorize access
-      #
-      db.authWithCustomToken process.env[game.token], (err, auth) ->
-        if err
-          console.log 'Error connecting to '+game.name
-          console.log err
-        else
-          console.log 'Authorized to update '+game.name+' leaderboard'
-
+      queue = new Firebase(game.queue)
+      queue.authWithCustomToken(process.env[game.token], (err) -> throw err if err)
       #
       # Wait for a score in the queue
       #
-      db.on 'value', (msg) ->
+      queue.on 'value', (msg) ->
         return unless msg.val()?
         console.log msg.val()
 
