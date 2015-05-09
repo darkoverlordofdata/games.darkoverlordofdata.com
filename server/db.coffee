@@ -1,39 +1,53 @@
 ###
  * DB operations
+ *
+ * Data on FirebaseIO
+ * Cache with MemCachier
+ *  
 ###
 ##
 #
 unless process.env.FIREBASE_AUTH?
   process.exit(console.log('Environment FIREBASE_AUTH not set'))
 
-
-EXPIRES = 60000 # cache expiry
 #
-# wow - moving to firebase replaced:
-#
-# fb
-# grant-hapi
-# purest
-# request
-# sequelize :(
-# sqlite3
-#
-# plus a bunch of complexity with uri callbacks
 #
 exports.register = (server, options, next) ->
 
-  Firebase = require("firebase")
+  EXPIRES = 60 # cache expiry
+  Firebase = require('firebase')
+  memjs = require('memjs')
+  cache = memjs.Client.create()
+
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
   dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
 
+  ###
+   * Triggers
+  ###
   trigger = new Firebase(dbRoot+'trigger')
   invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
-  invalidate_cache.on 'value', (value) ->
-    trigger.update(invalidate_cache: 0)
+  invalidate_cache.on 'value', (data) ->
+    if data.val() is true
+      trigger.update(invalidate_cache: false)
+      cache.flush (err, res) ->
+        console.log err if err?
+        console.log 'Cache Flushed: '+JSON.stringify(res)
 
-  errorHandler = (err) ->
+  ###
+   * General Firebase Errors
+  ###
+  fbErrorHandler = (err) ->
     throw err if err
+
+  ###
+   * General MemChachier Errors
+  ###
+  cacheErrorHandler = (err, val) ->
+    if err?
+      console.log err
+      console.log String(val)
 
   ###
    * Server Method Find
@@ -44,25 +58,27 @@ exports.register = (server, options, next) ->
 
     name: 'find'
     #
-    # Register as a cacheable server method
-    #
-    options:
-      cache: expiresIn: EXPIRES
-      generateKey: (model, where) -> model+JSON.stringify(where)
-
-    #
     # Find by criteria
     #
     method: (model, where, next) ->
 
-      db = new Firebase(dbRoot+model.toLowerCase())
-      db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
+      cache_key = model+JSON.stringify(where)
 
-      field = Object.keys(where)[0]
-      value = where[field]
+      cache.get cache_key, (err, val) ->
 
-      db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
-        next(null, model.val())
+        console.log 'Found in CACHE: '+cache_key if val?
+        return next(null, JSON.parse(val)) if val?
+
+        db = new Firebase(dbRoot+model.toLowerCase())
+        db.authWithCustomToken(process.env.FIREBASE_AUTH, fbErrorHandler)
+
+        field = Object.keys(where)[0]
+        value = where[field]
+
+        db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
+          data = model.val()
+          cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
+          next(null, data)
 
   ###
    * Server Method FindAll
@@ -73,22 +89,24 @@ exports.register = (server, options, next) ->
 
     name: 'findAll'
     #
-    # Register as a cacheable server method
-    #
-    options:
-      cache: expiresIn: EXPIRES
-      generateKey: (model) -> model
-
-    #
     # Find all data for the model
     #
     method: (model, next) ->
 
-      db = new Firebase(dbRoot+model.toLowerCase())
-      db.authWithCustomToken(process.env.FIREBASE_AUTH, errorHandler)
-      db.on 'value', (data) ->
-        db.off()
-        next(null, (val for key, val of data.val()))
+      cache_key = model
+
+      cache.get cache_key, (err, val) ->
+
+        console.log 'Found in CACHE: '+cache_key if val?
+        return next(null, JSON.parse(val)) if val?
+
+        db = new Firebase(dbRoot+model.toLowerCase())
+        db.authWithCustomToken(process.env.FIREBASE_AUTH, fbErrorHandler)
+        db.on 'value', (data) ->
+          db.off()
+          data = (val for key, val of data.val())
+          cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
+          return next(null, data)
 
   next()
   return

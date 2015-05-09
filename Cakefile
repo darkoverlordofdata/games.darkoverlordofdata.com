@@ -12,12 +12,12 @@ Firebase = require('firebase')
 task "trigger:cache", "create triggers", ->
   trigger = new Firebase('https://darkoverlordofdata.firebaseio.com/development/trigger')
   trigger.authWithCustomToken(process.env.FIREBASE_AUTH, (err) -> throw err if err)
-  trigger.update('invalidate_cache': 1, (err) -> process.exit())
+  trigger.update('invalidate_cache': true, (err) -> process.exit())
 
 task "trigger:reset", "create triggers", ->
   trigger = new Firebase('https://darkoverlordofdata.firebaseio.com/development/trigger')
   trigger.authWithCustomToken(process.env.FIREBASE_AUTH, (err) -> throw err if err)
-  trigger.update('reset_leaderboard': 0, (err) -> process.exit())
+  trigger.update('reset_leaderboard': false, (err) -> process.exit())
 
 
 
