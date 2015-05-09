@@ -14,7 +14,7 @@
 #
 Hapi = require('hapi')
 
-module.exports = server = new Hapi.Server(app: require('../config')) #, cache: require('./lib/cache'))
+module.exports = server = new Hapi.Server(app: require('../config'), cache: require('./lib/cache'))
 
 #
 # Setup the server with a host and port

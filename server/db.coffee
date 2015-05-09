@@ -3,7 +3,7 @@
 ###
 ##
 #
-unless process.env.FIREBASE_AUTH
+unless process.env.FIREBASE_AUTH?
   process.exit(console.log('Environment FIREBASE_AUTH not set'))
 
 
@@ -15,7 +15,7 @@ EXPIRES = 60000 # cache expiry
 # grant-hapi
 # purest
 # request
-# sequelize
+# sequelize :(
 # sqlite3
 #
 # plus a bunch of complexity with uri callbacks
@@ -26,6 +26,11 @@ exports.register = (server, options, next) ->
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
   dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
+
+  trigger = new Firebase(dbRoot+'trigger')
+  invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
+  invalidate_cache.on 'value', (value) ->
+    trigger.update(invalidate_cache: 0)
 
   errorHandler = (err) ->
     throw err if err

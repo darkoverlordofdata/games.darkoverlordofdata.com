@@ -10,6 +10,7 @@
   "dependencies": {
     "agoragames-leaderboard": "~2.1.0",
     "catbox-memcached": "~1.1.1",
+    "catbox-memory": "^1.1.1",
     "coffee-script": "~1.9.2",
     "firebase": "~2.2.4",
     "good": "^5.1.0",
