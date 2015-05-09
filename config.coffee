@@ -87,7 +87,7 @@ module.exports =
     error: "*"
   ]
 
-  opsInterval: if process.env.NODE_ENV is 'production' then 15000 else 5000
+  opsInterval: if process.env.NODE_ENV is 'production' then 60000 else 15000
 
   #|
   #|--------------------------------------------------------------------------
