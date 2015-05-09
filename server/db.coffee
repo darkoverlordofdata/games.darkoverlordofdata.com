@@ -23,8 +23,8 @@ EXPIRES = 60000 # cache expiry
 exports.register = (server, options, next) ->
 
   Firebase = require('firebase')
-  memjs = require('memjs')
-  cache = memjs.Client.create()
+#  memjs = require('memjs')
+#  cache = memjs.Client.create()
 
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
