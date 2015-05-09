@@ -30,13 +30,13 @@ exports.register = (server, options, next) ->
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
   dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
 
-  trigger = new Firebase(dbRoot+'trigger')
-  invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
-  invalidate_cache.on 'value', (value) ->
-    trigger.update(invalidate_cache: 0)
-
-  errorHandler = (err) ->
-    throw err if err
+#  trigger = new Firebase(dbRoot+'trigger')
+#  invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
+#  invalidate_cache.on 'value', (value) ->
+#    trigger.update(invalidate_cache: 0)
+#
+#  errorHandler = (err) ->
+#    throw err if err
 
   ###
    * Server Method Find
