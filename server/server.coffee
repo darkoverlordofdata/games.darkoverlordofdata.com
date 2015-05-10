@@ -26,8 +26,8 @@ if memcached?
 else
   memcached = 'localhost:11211'
 
-console.log 'WARNING: memcachier on '+memcachier
-console.log 'WARNING: memcached on '+memcached
+#console.log 'WARNING: memcachier on '+memcachier
+#console.log 'WARNING: memcached on '+memcached
 
 
 cacheOptions = [
@@ -39,11 +39,11 @@ cacheOptions = [
 #    engine: require('catbox-memcached')
 #    location: memcached
 #  }
-  {
-    name: 'memcachier'
-    engine: require('catbox-memcachier')
-    location: memcachier+'1'
-  }
+#  {
+#    name: 'memcachier'
+#    engine: require('catbox-memcachier')
+#    location: memcachier+'1'
+#  }
 ]
 
 
