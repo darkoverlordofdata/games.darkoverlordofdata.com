@@ -14,10 +14,13 @@
 #
 Hapi = require('hapi')
 
-module.exports = server = new Hapi.Server(app: require('../config'), cache: require('./lib/cache'))
+#
+# Create core system, injecting configuration and memory cache manager
+#
+module.exports = server = new Hapi.Server(app: require('../config'), cache: engine: require('catbox-memory'))
 
 #
-# Setup the server with a host and port
+# Set host and port
 #
 server.connection
   port: server.settings.app.port
@@ -32,16 +35,11 @@ server.views
   engines:
     tpl: require('liquid.coffee').setPath(server.settings.app.views)
 
-
 #
-# Standard plugins:
+# Load core plugins
 #
-#   logging
-#   database
-#   error handling
-#   sessions
-#
-plugins = [{
+plugins = [
+  {     # logging
     register: require('good')
     options:
       opsInterval: server.settings.app.opsInterval
@@ -49,11 +47,13 @@ plugins = [{
         reporter: require('good-console')
         args: server.settings.app.log
       ]
-  }, {
-    register: require('./db')
-  }, {
+  }, {  # custom cache
+    register: require('./cache/memjs')
+  }, {  # database
+    register: require('./db/firebase')
+  }, {  # error handler
     register: require('./errors')
-  }, {
+  }, {  # session manager
     register: require('yar')
     options: server.settings.app.yar
   }]

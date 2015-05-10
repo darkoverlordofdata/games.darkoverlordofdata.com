@@ -1,5 +1,5 @@
 ###
- * Redis options
+ * Redis connector for Leaderboard
 ###
 ##
 #

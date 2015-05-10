@@ -5,8 +5,9 @@
 #
 Firebase = require('firebase')
 Leaderboard = require('agoragames-leaderboard')
-scoring = require('./lib/scoring')
-redis = require('./lib/redis')
+scoring = require('./scoring')
+routes = require('./routes')
+redis = require('./redis')
 
 exports.register = (server, options, next) ->
 
@@ -60,6 +61,8 @@ exports.register = (server, options, next) ->
 
 
   ###
+   *
+   * Route to display leaderboard by name
    *
    * /leaderboard/{name}
    *

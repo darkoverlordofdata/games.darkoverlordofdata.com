@@ -2,7 +2,6 @@
  * DB operations
  *
  * Data on FirebaseIO
- * Cache with MemCachier
  *
 ###
 ##
@@ -16,9 +15,6 @@ exports.register = (server, options, next) ->
 
   EXPIRES = 0 # no expiration
   Firebase = require('firebase')
-  memjs = require('memjs')
-  cache = memjs.Client.create()
-
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
   dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
@@ -28,12 +24,14 @@ exports.register = (server, options, next) ->
   ###
   trigger = new Firebase(dbRoot+'trigger')
 
-  # trigger clear cache
+  ###
+   * Clear Cache
+  ###
   invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
   invalidate_cache.on 'value', (data) ->
     if data.val() is true
       trigger.update(invalidate_cache: false)
-      cache.flush (err, res) ->
+      server.methods.cache.flush (err, res) ->
         console.log err if err?
         console.log 'Cache Flushed: '+JSON.stringify(res)
 
@@ -66,7 +64,7 @@ exports.register = (server, options, next) ->
 
       cache_key = model+JSON.stringify(where)
 
-      cache.get cache_key, (err, val) ->
+      server.methods.cache.get cache_key, (err, val) ->
 
         return next(null, JSON.parse(val)) if val?
 
@@ -78,7 +76,7 @@ exports.register = (server, options, next) ->
 
         db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
           data = model.val()
-          cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
+          server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
           next(null, data)
 
   ###
@@ -96,7 +94,7 @@ exports.register = (server, options, next) ->
 
       cache_key = model
 
-      cache.get cache_key, (err, val) ->
+      server.methods.cache.get cache_key, (err, val) ->
 
         return next(null, JSON.parse(val)) if val?
 
@@ -105,7 +103,7 @@ exports.register = (server, options, next) ->
         db.on 'value', (data) ->
           db.off()
           data = (val for key, val of data.val())
-          cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
+          server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
           return next(null, data)
 
   next()
