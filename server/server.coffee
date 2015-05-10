@@ -14,11 +14,40 @@
 #
 Hapi = require('hapi')
 
+memcachier = if process.env.memcachier_29492? then JSON.parse(process.env.memcachier_29492)
+if memcachier?
+  memcachier = memcachier.username+':'+memcachier.password+'@'+memcachier.servers
+else
+  memcachier = 'localhost:11211'
+
+memcached = if process.env.memcachedcloud_aaaeb? then JSON.parse(process.env.memcachedcloud_aaaeb)
+if memcached?
+  memcached = memcached.username+':'+memcached.password+'@'+memcached.servers
+else
+  memcached = 'localhost:11211'
+
+
+cacheOptions = [
+  {
+    engine: require('catbox-memory')
+  }
+  {
+    name: 'memcached'
+    engine: require('catbox-memcached')
+    location: memcached
+  }
+#  {
+#    name: 'memcachier'
+#    engine: require('catbox-memcachier')
+#    location: memcachier+'1'
+#  }
+]
+
+
 #
 # Create core system, injecting configuration and memory cache manager
 #
-module.exports = server = new Hapi.Server(app: require('../config/config'), cache: engine: require('catbox-memory'))
-#module.exports = server = new Hapi.Server(app: require('../config/config'), cache: engine: require('catbox-memcachier'))
+module.exports = server = new Hapi.Server(app: require('../config/config'), cache: cacheOptions)
 
 #
 # Set host and port
