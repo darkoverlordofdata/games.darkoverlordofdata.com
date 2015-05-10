@@ -31,11 +31,11 @@ cacheOptions = [
   {
     engine: require('catbox-memory')
   }
-  {
-    name: 'memcached'
-    engine: require('catbox-memcached')
-    location: memcached
-  }
+#  {
+#    name: 'memcached'
+#    engine: require('catbox-memcached')
+#    location: memcached
+#  }
 #  {
 #    name: 'memcachier'
 #    engine: require('catbox-memcachier')
