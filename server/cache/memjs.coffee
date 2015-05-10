@@ -14,21 +14,15 @@ exports.register = (server, options, next) ->
 
   server.method
     name: 'cache.get'
-    method: (key, next) ->
-      cache.get(key, next)
-      return
+    method: (key, next) -> cache.get(key, next)
 
   server.method
     name: 'cache.set'
-    method: (key, value, next) ->
-      cache.set(key, value, next)
-      return
+    method: (key, value, next) -> cache.set(key, value, next)
 
   server.method
     name: 'cache.flush'
-    method: (next) ->
-      cache.flush(next)
-      return
+    method: (next) -> cache.flush(next)
 
 
   next()

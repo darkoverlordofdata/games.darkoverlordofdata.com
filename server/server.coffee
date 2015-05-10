@@ -17,7 +17,8 @@ Hapi = require('hapi')
 #
 # Create core system, injecting configuration and memory cache manager
 #
-module.exports = server = new Hapi.Server(app: require('../config/config'), cache: engine: require('catbox-memory'))
+#module.exports = server = new Hapi.Server(app: require('../config/config'), cache: engine: require('catbox-memory'))
+module.exports = server = new Hapi.Server(app: require('../config/config'), cache: engine: require('catbox-memcachier'))
 
 #
 # Set host and port
