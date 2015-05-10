@@ -9,77 +9,87 @@ exports.register = (server, options, next) ->
 
   server.route [
     {
-      method: "GET"
-      path: "/assets/{path*}"
+      method: 'GET'
+      path: '/favicon.png'
       config:
         handler:
-          directory:
-            path: path.join(server.settings.app.base, "public/assets")
+          file: path.join(server.settings.app.base, 'public/img/favicon.png')
 
-        id: "assets"
+        id: 'favicon'
+        
     }
     {
-      method: "GET"
-      path: "/css/{path*}"
+      method: 'GET'
+      path: '/assets/{path*}'
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.base, "public/css")
+            path: path.join(server.settings.app.base, 'public/assets')
 
-        id: "css"
+        id: 'assets'
     }
     {
-      method: "GET"
-      path: "/fonts/{path*}"
+      method: 'GET'
+      path: '/css/{path*}'
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.base, "public/fonts")
+            path: path.join(server.settings.app.base, 'public/css')
 
-        id: "fonts"
+        id: 'css'
     }
     {
-      method: "GET"
-      path: "/game/{path*}"
+      method: 'GET'
+      path: '/fonts/{path*}'
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.base, "public/game")
+            path: path.join(server.settings.app.base, 'public/fonts')
 
-        id: "games"
+        id: 'fonts'
     }
     {
-      method: "GET"
-      path: "/img/{path*}"
+      method: 'GET'
+      path: '/game/{path*}'
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.base, "public/img")
+            path: path.join(server.settings.app.base, 'public/game')
 
-        id: "img"
+        id: 'games'
     }
     {
-      method: "GET"
-      path: "/js/{path*}"
+      method: 'GET'
+      path: '/img/{path*}'
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.base, "public/js")
+            path: path.join(server.settings.app.base, 'public/img')
 
-        id: "js"
+        id: 'img'
     }
     {
-      method: "GET"
-      path: "/tpl/{path*}"
+      method: 'GET'
+      path: '/js/{path*}'
       config:
         handler:
           directory:
-            path: path.join(server.settings.app.base, "public/tpl")
+            path: path.join(server.settings.app.base, 'public/js')
 
-        id: "tpl"
+        id: 'js'
+    }
+    {
+      method: 'GET'
+      path: '/tpl/{path*}'
+      config:
+        handler:
+          directory:
+            path: path.join(server.settings.app.base, 'public/tpl')
+
+        id: 'tpl'
     }
   ]
   next()
   return
 
-exports.register.attributes = name: "assets"
+exports.register.attributes = name: 'public'

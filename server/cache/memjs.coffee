@@ -1,6 +1,9 @@
 ###
  * Cache
  *
+ * Server Methods
+ *
+ *  Use MemCashier for custom cacheing
  *
 ###
 ##
