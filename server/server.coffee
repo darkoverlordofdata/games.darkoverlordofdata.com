@@ -26,8 +26,8 @@ if memcached?
 else
   memcached = 'localhost:11211'
 
-#console.log 'WARNING: memcachier on '+memcachier
-#console.log 'WARNING: memcached on '+memcached
+console.log 'WARNING: memcachier on '+memcachier
+console.log 'WARNING: memcached on '+memcached
 
 
 cacheOptions = [
