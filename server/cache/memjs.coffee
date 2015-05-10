@@ -21,7 +21,7 @@ exports.register = (server, options, next) ->
   server.method
     name: 'cache.set'
     method: (key, value, next) ->
-      cache.get(key, value, next)
+      cache.set(key, value, next)
       return
 
   server.method
