@@ -3,10 +3,10 @@
 ###
 ##
 #
-Firebase = require('firebase')
 Leaderboard = require('agoragames-leaderboard')
+Firebase = require('firebase')
+config = require('./config')
 scoring = require('./scoring')
-routes = require('./routes')
 redis = require('./redis')
 
 exports.register = (server, options, next) ->
@@ -36,7 +36,7 @@ exports.register = (server, options, next) ->
         #
         # Create the redis adapter for this leaderboard
         #
-        do (leaderboard = new Leaderboard(game.name, server.settings.app.leaderboard, redis)) ->
+        do (leaderboard = new Leaderboard(game.name, config, redis)) ->
 
           #
           # Authorize the redis connection
@@ -73,18 +73,18 @@ exports.register = (server, options, next) ->
     method: 'GET'
     path: '/leaderboard/{name}'
     handler: (request, reply) ->
-      leaderboard = new Leaderboard(request.params.name, server.settings.app.leaderboard, redis)
+      leaderboard = new Leaderboard(request.params.name, config, redis)
       leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
 
       leaderboard.leaders 1, withMemberData: false, (leaders) ->
         reply.view 'leaderboard',
-          name: request.params.name
-          leaderboard: leaders
-        console.log 'disconnect /leaderboard/{name}'
+          name          : request.params.name
+          leaderboard   : leaders
+
         leaderboard.disconnect()
 
 
   next()
   return
 
-exports.register.attributes = name: 'scores'
+exports.register.attributes = name: 'leaderboard'
