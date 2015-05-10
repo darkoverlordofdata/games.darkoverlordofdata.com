@@ -3,13 +3,13 @@
 ###
 ##
 #
-Leaderboard = require('agoragames-leaderboard')
-Firebase = require('firebase')
-config = require('./config')
-scoring = require('./scoring')
-redis = require('./redis')
-
 exports.register = (server, options, next) ->
+
+  Leaderboard = require('agoragames-leaderboard')
+  Firebase = require('firebase')
+  config = require('./config')
+  scoring = require('./scoring')
+  redis = require('./redis')
 
   ###
    Initialize the leaderboard queue for each game

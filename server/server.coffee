@@ -38,9 +38,11 @@ server.views
 #
 # Load plugins
 ##
+#plugins = ({register: require(plugin), options: options} for plugin, options of require('../config/plugins'))
+
 plugins = []
 for plugin, options of require('../config/plugins')
-  console.log 'plugin: '+plugin
+  console.log 'install plugin: '+plugin
   plugins.push
     register: require(plugin)
     options: options
