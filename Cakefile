@@ -10,12 +10,12 @@ orm = require('./tools/fire-forge')
 Firebase = require('firebase')
 
 task "trigger:cache", "create triggers", ->
-  trigger = new Firebase('https://darkoverlordofdata.firebaseio.com/development/trigger')
+  trigger = new Firebase('https://darkoverlordofdata.firebaseio.com/development/system/trigger')
   trigger.authWithCustomToken(process.env.FIREBASE_AUTH, (err) -> throw err if err)
   trigger.update('invalidate_cache': true, (err) -> process.exit())
 
 task "trigger:reset", "create triggers", ->
-  trigger = new Firebase('https://darkoverlordofdata.firebaseio.com/development/trigger')
+  trigger = new Firebase('https://darkoverlordofdata.firebaseio.com/development/system/trigger')
   trigger.authWithCustomToken(process.env.FIREBASE_AUTH, (err) -> throw err if err)
   trigger.update('reset_leaderboard': false, (err) -> process.exit())
 
@@ -23,17 +23,17 @@ task "trigger:reset", "create triggers", ->
 
 #task "orm:dev", "make db in development", ->
 #
-#  dbinit orm('https://darkoverlordofdata.firebaseio.com/development',
+#  dbinit orm('https://darkoverlordofdata.firebaseio.com/development/data',
 #    process.env.FIREBASE_AUTH, ['game', 'katra']), -> process.exit()
-#
+##
 #task "orm:tst", "make db in test", ->
 #
-#  dbinit orm('https://darkoverlordofdata.firebaseio.com/test',
+#  dbinit orm('https://darkoverlordofdata.firebaseio.com/test/data',
 #    process.env.FIREBASE_AUTH, ['game', 'katra']), -> process.exit()
 #
 #task "orm:prd", "make db in production", ->
 #
-#  dbinit orm('https://darkoverlordofdata.firebaseio.com/production',
+#  dbinit orm('https://darkoverlordofdata.firebaseio.com/production/data',
 #    process.env.FIREBASE_AUTH, ['game', 'katra']), -> process.exit()
 #
 ###

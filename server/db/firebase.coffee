@@ -9,6 +9,21 @@
 unless process.env.FIREBASE_AUTH?
   process.exit(console.log('Environment FIREBASE_AUTH not set'))
 
+###
+ * General Firebase Errors
+###
+fbErrorHandler = (err) ->
+  throw err if err
+
+###
+ * General MemChachier Errors
+###
+cacheErrorHandler = (err, val) ->
+  if err?
+    console.log err
+    console.log String(val)
+
+
 #
 #
 exports.register = (server, options, next) ->
@@ -17,37 +32,27 @@ exports.register = (server, options, next) ->
   Firebase = require('firebase')
 
   env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
-  dbRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
+
+  envRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
+  dbRoot = envRoot+'data/'
+  sysRoot = envRoot+'system/'
+
+  system = new Firebase(sysRoot)
+  system.authWithCustomToken(process.env.FIREBASE_AUTH, fbErrorHandler)
+
+  # Check in
+  system.update('info': server.info)
 
   ###
-   * Triggers
+   * Clear Cache?
   ###
-  trigger = new Firebase(dbRoot+'trigger')
-
-  ###
-   * Clear Cache
-  ###
-  invalidate_cache = new Firebase(dbRoot+'trigger/invalidate_cache')
+  invalidate_cache = new Firebase(sysRoot+'trigger/invalidate_cache')
   invalidate_cache.on 'value', (data) ->
     if data.val() is true
-      trigger.update(invalidate_cache: false)
+      system.update(trigger:invalidate_cache: false)
       server.methods.cache.flush (err, res) ->
         console.log err if err?
         console.log 'Cache Flushed: '+JSON.stringify(res)
-
-  ###
-   * General Firebase Errors
-  ###
-  fbErrorHandler = (err) ->
-    throw err if err
-
-  ###
-   * General MemChachier Errors
-  ###
-  cacheErrorHandler = (err, val) ->
-    if err?
-      console.log err
-      console.log String(val)
 
   ###
    * Server Method Find
