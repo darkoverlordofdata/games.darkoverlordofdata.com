@@ -26,7 +26,7 @@ module.exports =
   #| Title for your site
   #|
   #|
-  site_name: 'Game*O*Rama'
+  siteName: 'Game*O*Rama'
 
   #|
   #|--------------------------------------------------------------------------

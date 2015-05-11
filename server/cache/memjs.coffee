@@ -27,6 +27,10 @@ exports.register = (server, options, next) ->
     name: 'cache.flush'
     method: (next) -> cache.flush(next)
 
+  server.method
+    name: 'cache.stats'
+    method: (next) -> cache.stats(next)
+
 
   next()
   return

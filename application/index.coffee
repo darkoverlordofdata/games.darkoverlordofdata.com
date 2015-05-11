@@ -15,9 +15,21 @@ exports.register = (server, options, next) ->
   server.route [
     {
       method: 'GET'
+      path: '/stats'
+      config:
+        id: 'stats'
+        handler: (request, reply) ->
+          server.methods.cache.stats (err, server, stats) ->
+            console.log err
+            console.log server
+            console.log stats
+            reply.redirect '/'
+
+    }
+    {
+      method: 'GET'
       path: '/'
       config:
-#        plugins: 'hapi-auth-cookie': redirectTo: false
         id: 'index'
         handler: (request, reply) ->
           server.methods.findAll 'Katra', (err, katras) ->

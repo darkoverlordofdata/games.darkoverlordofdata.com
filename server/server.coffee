@@ -12,7 +12,7 @@
 # Create core system, injecting configuration and cache manager
 #
 Hapi = require('hapi')
-module.exports = server = new Hapi.Server(app: require('../config'), cache: require('./cache'))
+module.exports = server = new Hapi.Server(app: require('../config'), cache: require('./cache'), load:sampleInterval:1000)
 
 #
 # Set host and port
@@ -52,4 +52,3 @@ server.register plugins, ->
     #
     console.log 'Game*O*Rama'
     console.log 'Started at: ' + server.info.uri
-
