@@ -21,22 +21,11 @@ exports.register = (server, options, next) ->
         handler: (request, reply) ->
           server.methods.findAll 'Katra', (err, katras) ->
             server.methods.findAll 'Game', (err, games) ->
-#              data =
-#                topHref: '/about'
-#                topButton: 'About'
-#                katras: katras
-#                games: games
-#
-#              server.render 'index', data, {}, (err, rendered, config) ->
-#                console.log  'render '+rendered.length+' bytes'
-#
-#
               reply.view 'index',
                 topHref: '/about'
                 topButton: 'About'
                 katras: katras
                 games: games
-
 
     }
     {

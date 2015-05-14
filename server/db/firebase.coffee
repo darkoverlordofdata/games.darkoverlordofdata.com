@@ -28,31 +28,26 @@ cacheErrorHandler = (err, val) ->
 #
 exports.register = (server, options, next) ->
 
+  path = require('path')
+  dbPath = path.resolve(__dirname, '../../db')
+  orm = require('ormfire')(dbPath, process.env.FIREBASE_AUTH).init()
+
   EXPIRES = 0 # no expiration
-  Firebase = require('firebase')
 
-  env = if process.env.NODE_ENV is 'production' then 'production' else 'development'
-
-  envRoot = 'https://darkoverlordofdata.firebaseio.com/'+env+'/'
-  dbRoot = envRoot+'data/'
-  sysRoot = envRoot+'system/'
-
-  system = new Firebase(sysRoot)
-  system.authWithCustomToken(process.env.FIREBASE_AUTH, fbErrorHandler)
 
   # Check in
-  system.update('info': server.info)
+  #system.update('info': server.info)
 
   ###
    * Clear Cache?
   ###
-  invalidate_cache = new Firebase(sysRoot+'trigger/invalidate_cache')
-  invalidate_cache.on 'value', (data) ->
-    if data.val() is true
-      system.update(trigger:invalidate_cache: false)
-      server.methods.cache.flush (err, res) ->
-        console.log err if err?
-        console.log 'Cache Flushed: '+JSON.stringify(res)
+#  invalidate_cache = new Firebase(sysRoot+'trigger/invalidate_cache')
+#  invalidate_cache.on 'value', (data) ->
+#    if data.val() is true
+#      system.update(trigger:invalidate_cache: false)
+#      server.methods.cache.flush (err, res) ->
+#        console.log err if err?
+#        console.log 'Cache Flushed: '+JSON.stringify(res)
 
   ###
    * Server Method Find
@@ -65,22 +60,13 @@ exports.register = (server, options, next) ->
     #
     # Find by criteria
     #
-    method: (model, where, next) ->
+    method: (model, options, next) ->
 
-      cache_key = model+JSON.stringify(where)
+      cache_key = model+JSON.stringify(options)
 
       server.methods.cache.get cache_key, (err, val) ->
-
         return next(null, JSON.parse(val)) if val?
-
-        db = new Firebase(dbRoot+model.toLowerCase())
-        db.authWithCustomToken(process.env.FIREBASE_AUTH, fbErrorHandler)
-
-        field = Object.keys(where)[0]
-        value = where[field]
-
-        db.orderByChild(field).equalTo(value).once 'child_added', (model) ->
-          data = model.val()
+        orm[model].find(options, true).then (data) ->
           server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
           next(null, data)
 
@@ -100,16 +86,10 @@ exports.register = (server, options, next) ->
       cache_key = model
 
       server.methods.cache.get cache_key, (err, val) ->
-
         return next(null, JSON.parse(val)) if val?
-
-        db = new Firebase(dbRoot+model.toLowerCase())
-        db.authWithCustomToken(process.env.FIREBASE_AUTH, fbErrorHandler)
-        db.on 'value', (data) ->
-          db.off()
-          data = (val for key, val of data.val())
+        orm[model].findAll(true).then (data) ->
           server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
-          return next(null, data)
+          next(null, data)
 
   next()
   return

@@ -24,7 +24,7 @@ exports.register = (server, options, next) ->
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Game', slug:request.params.name, (err, game) ->
+          server.methods.find 'Game', where:slug:request.params.name,(err, game) ->
             reply.redirect game.url+'/'+game.main
 
     }
@@ -36,27 +36,27 @@ exports.register = (server, options, next) ->
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Game', slug:request.params.name, (err, game) ->
+          server.methods.find 'Game', where:slug:request.params.name,(err, game) ->
             reply.view 'play_game', game: game
 
     }
-    {
-      #
-      # NodeWebkit download??? Do we need this???
-      #
-      method: 'GET'
-      path: '/nw/{name}'
-      config:
-        handler: (request, reply) ->
-          zipdir path.join(server.settings.app.base, '/public/game/', request.params.name), (err, data) ->
-            return reply(err) if err
-            reply(data)
-            .type('application/zip')
-            .header('Content-Disposition', 'attachment; filename='+request.params.name+'.nw')
-            .header('Content-Length', data.length)
-
-        id: 'nw'
-    }
+#    {
+#      #
+#      # NodeWebkit download??? Do we need this???
+#      #
+#      method: 'GET'
+#      path: '/nw/{name}'
+#      config:
+#        handler: (request, reply) ->
+#          zipdir path.join(server.settings.app.base, '/public/game/', request.params.name), (err, data) ->
+#            return reply(err) if err
+#            reply(data)
+#            .type('application/zip')
+#            .header('Content-Disposition', 'attachment; filename='+request.params.name+'.nw')
+#            .header('Content-Length', data.length)
+#
+#        id: 'nw'
+#    }
   ]
 
 

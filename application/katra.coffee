@@ -48,7 +48,7 @@ exports.register = (server, options, next) ->
       path: '/katra/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Katra', slug:request.params.name, (err, katra) ->
+          server.methods.find 'Katra', where:slug:request.params.name, (err, katra) ->
             reply.redirect katra.url
 
     }
@@ -60,7 +60,7 @@ exports.register = (server, options, next) ->
       path: '/katra/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Katra', slug:request.params.name, (err, katra) ->
+          server.methods.find 'Katra', where:slug:request.params.name, (err, katra) ->
             reply.view 'play_katra', katra: katra
 
     }

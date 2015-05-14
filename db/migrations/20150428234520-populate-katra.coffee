@@ -1,8 +1,8 @@
 "use strict"
 module.exports =
-  up: (queryInterface, Sequelize) ->
+  up: (queryInterface, Sequelize, done) ->
 
-    Katras = require('../models/katra')(queryInterface.sequelize, Sequelize)
+    Katras = require('../models').Katra
 
     Katras.sync().then ->
       Katras.create(
@@ -36,9 +36,10 @@ module.exports =
               description: 'Why do you put your wagons in a circle?<br>To get better Wi-Fi!',
               image: 'assets/oregon.png'
               url: 'https://darkoverlordofdata.com/katra/run/?basic=hp2k&program=OREGON'
-            )
+            ).then ->
+              done()
 
 
 
 
-  down: (queryInterface, Sequelize) ->
+  down: (queryInterface, Sequelize, done) ->
