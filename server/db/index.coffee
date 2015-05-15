@@ -1,5 +1,5 @@
 ###
- * FireOrm Plugin
+ * OrmFire Plugin
  *
  * Manages ORM startup and cacheing
  *
