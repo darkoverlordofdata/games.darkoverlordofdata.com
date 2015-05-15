@@ -1,16 +1,16 @@
 {
   "development": {
-    "firebase": "https://darkoverlordofdata.firebaseio.com/development/",
+    "firebase": "https://development-d16a.firebaseio.com/development/",
     "storage": "../db/db.sqlite3",
     "dialect": "sqlite"
   },
   "test": {
-    "firebase": "https://darkoverlordofdata.firebaseio.com/test/",
+    "firebase": "https://development-d16a.firebaseio.com/test/",
     "storage": "../db/db.sqlite3",
     "dialect": "sqlite"
   },
   "production": {
-    "firebase": "https://darkoverlordofdata.firebaseio.com/production/",
+    "firebase": "https://darkoverlordofdata.firebaseio.com/",
     "storage": "../db/db.sqlite3",
     "dialect": "sqlite"
   }
