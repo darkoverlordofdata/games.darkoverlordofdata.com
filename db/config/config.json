@@ -10,7 +10,7 @@
     "dialect": "sqlite"
   },
   "production": {
-    "firebase": "https://d16a-tut.firebaseio.com/production/",
+    "firebase": "https://darkoverlordofdata.firebaseio.com/production/",
     "storage": "../db/db.sqlite3",
     "dialect": "sqlite"
   }
