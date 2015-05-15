@@ -1,6 +1,6 @@
 {
   "development": {
-    "firebase": "https://d16a-tut.firebaseio.com/development/",
+    "firebase": "https://darkoverlordofdata.firebaseio.com/development/",
     "storage": "../db/db.sqlite3",
     "dialect": "sqlite"
   },

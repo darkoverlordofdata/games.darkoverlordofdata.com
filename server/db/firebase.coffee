@@ -10,12 +10,6 @@ unless process.env.FIREBASE_AUTH?
   process.exit(console.log('Environment FIREBASE_AUTH not set'))
 
 ###
- * General Firebase Errors
-###
-fbErrorHandler = (err) ->
-  throw err if err
-
-###
  * General MemChachier Errors
 ###
 cacheErrorHandler = (err, val) ->
@@ -28,26 +22,38 @@ cacheErrorHandler = (err, val) ->
 #
 exports.register = (server, options, next) ->
 
+  EXPIRES = 0 # no expiration
   path = require('path')
   dbPath = path.resolve(__dirname, '../../db')
-  orm = require('ormfire')(dbPath, process.env.FIREBASE_AUTH).init()
+  orm = require('ormfire')(dbPath, process.env.FIREBASE_AUTH)
+  .init (queryInterface, Sequelize) ->
+    sequelize = queryInterface.sequelize
 
-  EXPIRES = 0 # no expiration
+    ###
+     * Started at ...
+    ###
+    sequelize.ref.child('system')
+    .update(info: server.info)
+
+    ###
+     * Create triggers
+    ###
+    sequelize.ref.child('system/trigger')
+    .update(invalidate_cache: false)
+
+    ###
+     * Wait for triggers
+    ###
+    sequelize.ref.child('system/trigger/invalidate_cache')
+    .on 'value', (data) ->
+      if data.val() is true
+        sequelize.ref.child('system/trigger')
+        .update(invalidate_cache: false)
+        server.methods.cache.flush (err, res) ->
+          console.log err if err?
+          console.log 'Cache Flushed: '+JSON.stringify(res)
 
 
-  # Check in
-  #system.update('info': server.info)
-
-  ###
-   * Clear Cache?
-  ###
-#  invalidate_cache = new Firebase(sysRoot+'trigger/invalidate_cache')
-#  invalidate_cache.on 'value', (data) ->
-#    if data.val() is true
-#      system.update(trigger:invalidate_cache: false)
-#      server.methods.cache.flush (err, res) ->
-#        console.log err if err?
-#        console.log 'Cache Flushed: '+JSON.stringify(res)
 
   ###
    * Server Method Find
