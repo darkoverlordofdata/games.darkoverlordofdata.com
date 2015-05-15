@@ -13,12 +13,12 @@ unless process.env.FIREBASE_AUTH?
 #
 exports.register = (server, options, next) ->
 
-  EXPIRES = 3 # no expiration
+  EXPIRES = 0 # no expiration
   path = require('path')
   models = path.resolve(__dirname, '../../db')
   migrations = path.resolve(models, './migrations')
   orm = require('ormfire')(models, process.env.FIREBASE_AUTH)
-  .init (queryInterface, Sequelize) ->
+  orm.init (queryInterface, Sequelize) ->
     sequelize = queryInterface.sequelize
     ###
      * Check for migrations
@@ -66,11 +66,6 @@ exports.register = (server, options, next) ->
     # Find by criteria
     #
     method: (model, options, next) ->
-
-#      orm[model].find(options, true).then (data) ->
-#        console.log data
-#        next(null, data)
-
 
       cache_key = model+JSON.stringify(options)
 
