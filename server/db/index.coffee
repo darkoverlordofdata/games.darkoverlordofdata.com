@@ -1,7 +1,7 @@
 ###
- * DB operations
+ * FireOrm Plugin
  *
- * Data on FirebaseIO
+ * Manages ORM startup and cacheing
  *
 ###
 ##
@@ -14,12 +14,14 @@ unless process.env.FIREBASE_AUTH?
 exports.register = (server, options, next) ->
 
   EXPIRES = 0 # no expiration
+
   path = require('path')
   models = path.resolve(__dirname, '../../db')
   migrations = path.resolve(models, './migrations')
   orm = require('ormfire')(models, process.env.FIREBASE_AUTH)
   orm.init (queryInterface, Sequelize) ->
     sequelize = queryInterface.sequelize
+
     ###
      * Check for migrations
     ###
@@ -27,25 +29,14 @@ exports.register = (server, options, next) ->
     migrator.migrate method: 'up', ->
 
       ###
-       * Started at ...
+       * Initialize System
       ###
-      sequelize.ref.child('system')
-      .update(info: server.info)
-
-      ###
-       * Create triggers
-      ###
-      sequelize.ref.child('system/trigger')
-      .update(invalidate_cache: false)
-
-      ###
-       * Wait for triggers
-      ###
+      sequelize.ref.child('system').update(info: server.info)
+      sequelize.ref.child('system/trigger').update(invalidate_cache: false)
       sequelize.ref.child('system/trigger/invalidate_cache')
       .on 'value', (data) ->
         if data.val() is true
-          sequelize.ref.child('system/trigger')
-          .update(invalidate_cache: false)
+          sequelize.ref.child('system/trigger').update(invalidate_cache: false)
           server.methods.cache.flush (err, res) ->
             console.log err if err?
             console.log 'Cache Flushed: '+JSON.stringify(res)
@@ -57,7 +48,7 @@ exports.register = (server, options, next) ->
   ###
    * Server Method Find
    *
-   * Find data that meets criterea
+   * Find one record that meets criterea
   ###
   server.method
 
@@ -71,16 +62,14 @@ exports.register = (server, options, next) ->
 
       server.methods.cache.get cache_key, (err, val) ->
         return next(null, JSON.parse(val)) if val?
-        console.log cache_key
         orm[model].find(options, true).then (data) ->
-          console.log data
           server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
           next(null, data)
 
   ###
    * Server Method FindAll
    *
-   * Get all records for a table
+   * Find all records that meet criterea
   ###
   server.method
 
