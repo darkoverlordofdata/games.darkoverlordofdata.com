@@ -55,7 +55,7 @@ module.exports =
   #| database connection to fiebase
   #|
   #|
-  './db/firebase': {}
+  './db': {}
 
   #|--------------------------------------------------------------------------
   #| errors
