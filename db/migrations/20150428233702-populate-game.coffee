@@ -6,11 +6,11 @@ module.exports =
 
     Games.sync().then ->
       Games.create(
-        active: 1
+        active: true
         name: 'Asteroid Simulator'
         slug: 'asteroids'
         url: 'https://darkoverlordofdata.com/asteroids'
-        leaderboard: 0
+        leaderboard: true
         queue: 'https://asteroids-d16a.firebaseio.com/scores/'
         token: 'ASTEROIDS_D16A'
         scoring: 'highScore'

@@ -6,7 +6,7 @@ module.exports =
 
     Katras.sync().then ->
       Katras.create(
-        active: 1,
+        active: true,
         slug: 'sttr1',
         title: 'Katra . . .',
         description: 'Like, beam me up, dude.',
@@ -16,7 +16,7 @@ module.exports =
         updatedAt: 0
       ).then ->
         Katras.create(
-          active: 1,
+          active: true,
           slug: 'wumpus',
           title: 'Hunt the Wumpus',
           description: 'What\'s a Wumpus?',
@@ -26,7 +26,7 @@ module.exports =
           updatedAt: 0
         ).then ->
           Katras.create(
-            active: 1,
+            active: true,
             slug: 'eliza',
             title: 'Eliza',
             description: 'A shrink with a \'tude.',
@@ -36,7 +36,7 @@ module.exports =
             updatedAt: 0
           ).then ->
             Katras.create(
-              active: 1,
+              active: true,
               slug: 'oregon',
               title: 'Oregon',
               description: 'Why do you put your wagons in a circle?<br>To get better Wi-Fi!',

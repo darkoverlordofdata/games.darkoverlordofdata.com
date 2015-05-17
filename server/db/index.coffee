@@ -16,10 +16,10 @@ exports.register = (server, options, next) ->
   EXPIRES = 0 # no expiration
 
   path = require('path')
-  yamljs = require('yamljs')
+  yaml = require('yamljs')
   models = path.resolve(__dirname, '../../db')
   migrations = path.resolve(models, './migrations')
-  schema = yamljs.load(path.join(models, 'rules.yaml')).schema
+  schema = yaml.load(path.join(models, 'rules.yaml')).schema
 
   orm = require('ormfire')(models, process.env.FIREBASE_AUTH, schema)
   orm.init (queryInterface, Sequelize) ->
