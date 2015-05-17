@@ -1,6 +1,6 @@
 {
   "development": {
-    "firebase": "https://development-d16a.firebaseio.com/development/",
+    "firebase": "https://development-d16a.firebaseio.com/",
     "storage": "../db/db.sqlite3",
     "dialect": "sqlite"
   },

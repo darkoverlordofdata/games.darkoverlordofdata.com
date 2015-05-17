@@ -12,6 +12,8 @@ module.exports =
         description: 'Like, beam me up, dude.',
         image: 'assets/katra.png'
         url: 'https://darkoverlordofdata.com/katra/run/?basic=hp2k&program=STTR1'
+        createdAt: Date.now()
+        updatedAt: 0
       ).then ->
         Katras.create(
           active: 1,
@@ -20,6 +22,8 @@ module.exports =
           description: 'What\'s a Wumpus?',
           image: 'assets/wumpus.png'
           url: 'https://darkoverlordofdata.com/katra/run/?basic=atari&program=WUMPUS'
+          createdAt: Date.now()
+          updatedAt: 0
         ).then ->
           Katras.create(
             active: 1,
@@ -28,6 +32,8 @@ module.exports =
             description: 'A shrink with a \'tude.',
             image: 'assets/wumpus.png'
             url: 'https://darkoverlordofdata.com/katra/run/?basic=gwbasic&program=eliza'
+            createdAt: Date.now()
+            updatedAt: 0
           ).then ->
             Katras.create(
               active: 1,
@@ -36,6 +42,8 @@ module.exports =
               description: 'Why do you put your wagons in a circle?<br>To get better Wi-Fi!',
               image: 'assets/oregon.png'
               url: 'https://darkoverlordofdata.com/katra/run/?basic=hp2k&program=OREGON'
+              createdAt: Date.now()
+              updatedAt: 0
             ).then ->
               done()
 

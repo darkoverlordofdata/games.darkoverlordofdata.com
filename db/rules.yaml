@@ -1,0 +1,61 @@
+functions:
+  - isLoggedIn(): auth.uid !== null
+
+schema:
+  type: object
+  properties:
+    data:
+      type: object
+      properties:
+
+        Game:
+          type: object
+          indexOn: slug
+          properties:
+            active:       {type: boolean}
+            name:         {type: string}
+            slug:         {type: string}
+            url:          {type: string}
+            leaderboard:  {type: boolean}
+            queue:        {type: string}
+            token:        {type: string}
+            scoring:      {type: string}
+            author:       {type: string}
+            description:  {type: string}
+            version:      {type: string}
+            icon:         {type: string}
+            main:         {type: string}
+            height:       {type: number}
+            width:        {type: number}
+            createdAt:    {type: number}
+            updatedAt:    {type: number}
+
+        Katra:
+          type: object
+          indexOn: slug
+          properties:
+            active:       {type: boolean}
+            slug:         {type: string}
+            title:        {type: string}
+            description:  {type: string}
+            image:        {type: string}
+            url:          {type: string}
+            createdAt:    {type: number}
+            updatedAt:    {type: number}
+
+    system:
+      type: object
+      properties:
+        ddic: {}
+        info: {}
+        sequelizemeta: {}
+        trigger: {}
+
+
+access:
+  - location: /
+    read:  false
+    write: false
+  - location: /data
+    read:  true
+    write: false

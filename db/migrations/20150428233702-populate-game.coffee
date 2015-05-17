@@ -21,6 +21,8 @@ module.exports =
         main: 'asteroids.html'
         height: 600
         width: 800
+        createdAt: Date.now()
+        updatedAt: 0
       ).then ->
         done()
 

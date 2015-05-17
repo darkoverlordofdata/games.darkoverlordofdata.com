@@ -14,3 +14,5 @@ task "trigger:cache", "set trigger invalidate_cache", ->
 
     sequelize = queryInterface.sequelize
     sequelize.ref.child('system/trigger').update(invalidate_cache: true)
+
+
