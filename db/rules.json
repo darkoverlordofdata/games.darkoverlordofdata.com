@@ -1,0 +1,140 @@
+{
+  "rules":{
+    ".write":"(false)",
+    ".read":"false",
+    "data": {
+      ".write":"(false)",
+      ".read":"true",
+      "Game": {
+        ".indexOn": ["slug"],
+        ".write":"(false)",
+        ".read":"true",
+        "active": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "name": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "slug": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "url": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "leaderboard": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "queue": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "token": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "scoring": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "author": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "description": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "version": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "icon": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "main": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "height": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "width": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "createdAt": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "updatedAt": {
+          ".write":"(false)",
+          ".read":"true"
+        }
+      },
+      "Katra": {
+        ".indexOn": ["slug"],
+        ".write":"(false)",
+        ".read":"true",
+        "active": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "slug": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "title": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "description": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "image": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "url": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "createdAt": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "updatedAt": {
+          ".write":"(false)",
+          ".read":"true"
+        }
+      }
+    },
+    "system": {
+      ".write":"(false)",
+      ".read":"false",
+      "ddic": {
+        ".write":"(false)",
+        ".read":"false"
+      },
+      "info": {
+        ".write":"(false)",
+        ".read":"false"
+      },
+      "sequelizemeta": {
+        ".write":"(false)",
+        ".read":"false"
+      },
+      "trigger": {
+        ".write":"(false)",
+        ".read":"false"
+      }
+    }
+  }
+}
