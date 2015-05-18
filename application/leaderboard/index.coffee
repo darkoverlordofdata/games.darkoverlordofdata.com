@@ -7,57 +7,85 @@ exports.register = (server, options, next) ->
 
   Leaderboard = require('agoragames-leaderboard')
   Firebase = require('firebase')
-  config = require('./config')
   scoring = require('./scoring')
+  config = require('./config')
   redis = require('./redis')
+  # options cache
+  scoreBy = {}
+  titles = {}
+  names = {}
 
   ###
    Initialize the leaderboard queue for each game
   ###
   server.methods.findAll 'Game', (err, games) ->
-
     games.forEach (game) ->
-      return unless game.queue?       # is there a queue url?
       return unless game.leaderboard  # is it active?
+      return unless game.queue        # is there a queue url?
 
-      bestScore = scoring[game.scoring]
+      #
+      # cache leaderboard options
+      #
+      scoreBy[game.slug] = {}
+      titles[game.slug] = {}
+      server.methods.findAll 'Leaderboard', (err, leaderboards) ->
+        if leaderboards.length is 1
+          # just use the slug
+          scoreBy[game.slug][leaderboards[0].title] = leaderboards[0].scoring
+          titles[game.slug][leaderboards[0].title] = game.slug
+          names[game.slug] = [leaderboards[0].title]
+        else
+          # use compound name
+          leaderboards.forEach (leaderboard) ->
+            scoreBy[game.slug][leaderboard.title] = leaderboard.scoring
+            titles[game.slug][leaderboard.title] = game.slug+'.'+leaderboard.title
+            names[game.slug+'.'+leaderboard.title] = leaderboard.title
+
+
       #
       # Connect to the queue
       #
       queue = new Firebase(game.queue)
+      unless process.env[game.token]?
+        process.exit(console.log('Environment '+game.token+' not set'))
+
       queue.authWithCustomToken(process.env[game.token], (err) -> throw err if err)
       #
-      # Wait for a score in the queue
+      # Wait for a score message in the queue:
       #
-      queue.on 'value', (msg) ->
-        return unless msg.val()?
-        console.log msg.val()
+      #   slug: asteroids
+      #   title: 'Asteroid Simulator'
+      #   id: gandalf
+      #   score: 42
+      #
+      queue.on 'value', (queue) ->
+        return unless queue.val()?
+        msgs = (val for key, val of queue.val())
+        msgs.forEach (msg, index) ->
 
-        #
-        # Create the redis adapter for this leaderboard
-        #
-        do (leaderboard = new Leaderboard(game.name, config, redis)) ->
+          console.log 'score:', msg
+
+          # make sure it's a valid message
+          return if msg.slug isnt game.slug
+          return unless scoreBy[msg.slug]?[msg.title]?
+
+          bestScore = scoreBy[msg.slug][msg.title]
+          title = titles[msg.slug][msg.title]
 
           #
-          # Authorize the redis connection
+          # Create the redis adapter for this leaderboard title
           #
+          leaderboard = new Leaderboard(title, config, redis)
           leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
 
-          # copy values to a list
-          vals = (val for key, val of msg.val())
+          leaderboard.scoreFor msg.id, (currentScore) ->
+            leaderboard.rankMemberIf bestScore, msg.id, parseInt(msg.score, 10), currentScore, null, (member) ->
+              leaderboard.disconnect()
+              #
+              # clean up the queue if that was the last one
+              #
+              queue.ref().remove() if index is msgs.length-1
 
-          #
-          # Post each score to the leaderboard
-          #
-          vals.forEach (val, index) ->
-            leaderboard.scoreFor val.id, (currentScore) ->
-              leaderboard.rankMemberIf bestScore, val.id, parseInt(val.score,10), currentScore, null, (member) ->
-                #
-                # if that was the last one, them clean up
-                #
-                if index is vals.length-1
-                  leaderboard.disconnect()
-                  msg.ref().remove();
 
 
   ###
@@ -78,7 +106,7 @@ exports.register = (server, options, next) ->
 
       leaderboard.leaders 1, withMemberData: false, (leaders) ->
         reply.view 'leaderboard',
-          name          : request.params.name
+          name          : names[request.params.name]
           leaderboard   : leaders
 
         leaderboard.disconnect()

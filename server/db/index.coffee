@@ -16,12 +16,10 @@ exports.register = (server, options, next) ->
   EXPIRES = 0 # no expiration
 
   path = require('path')
-  yaml = require('yamljs')
   models = path.resolve(__dirname, '../../db')
   migrations = path.resolve(models, './migrations')
-  schema = yaml.load(path.join(models, 'rules.yaml')).schema
 
-  orm = require('ormfire')(models, process.env.FIREBASE_AUTH, schema)
+  orm = require('ormfire')(models, process.env.FIREBASE_AUTH)
   orm.init (queryInterface, Sequelize) ->
     sequelize = queryInterface.sequelize
 
@@ -80,13 +78,17 @@ exports.register = (server, options, next) ->
     #
     # Find all data for the model
     #
-    method: (model, next) ->
+    method: (model, options, next) ->
+
+      unless next?
+        next = options
+        options = {}
 
       cache_key = model
 
       server.methods.cache.get cache_key, (err, val) ->
         return next(null, JSON.parse(val)) if val?
-        orm[model].findAll(true).then (data) ->
+        orm[model].findAll(options, true).then (data) ->
           server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
           next(null, data)
 

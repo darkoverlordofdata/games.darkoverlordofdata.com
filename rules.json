@@ -37,10 +37,6 @@
           ".write":"(false)",
           ".read":"true"
         },
-        "scoring": {
-          ".write":"(false)",
-          ".read":"true"
-        },
         "author": {
           ".write":"(false)",
           ".read":"true"
@@ -66,6 +62,39 @@
           ".read":"true"
         },
         "width": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "createdAt": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "updatedAt": {
+          ".write":"(false)",
+          ".read":"true"
+        }
+      },
+      "Leaderboard": {
+        ".indexOn": ["slug"],
+        ".write":"(false)",
+        ".read":"true",
+        "active": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "slug": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "title": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "description": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "scoring": {
           ".write":"(false)",
           ".read":"true"
         },

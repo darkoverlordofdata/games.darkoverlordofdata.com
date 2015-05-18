@@ -19,7 +19,6 @@ schema:
             leaderboard:  {type: boolean}
             queue:        {type: string}
             token:        {type: string}
-            scoring:      {type: string}
             author:       {type: string}
             description:  {type: string}
             version:      {type: string}
@@ -27,6 +26,18 @@ schema:
             main:         {type: string}
             height:       {type: number}
             width:        {type: number}
+            createdAt:    {type: number}
+            updatedAt:    {type: number}
+
+        Leaderboard:
+          type: object
+          indexOn: slug
+          properties:
+            active:       {type: boolean}
+            slug:         {type: string}
+            title:        {type: string}
+            description:  {type: string}
+            scoring:      {type: string}
             createdAt:    {type: number}
             updatedAt:    {type: number}
 
