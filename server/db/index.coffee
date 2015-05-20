@@ -13,7 +13,7 @@ unless process.env.FIREBASE_AUTH?
 #
 exports.register = (server, options, next) ->
 
-  EXPIRES = 0 # no expiration
+  EXPIRES = 1 # no expiration
 
   path = require('path')
   models = path.resolve(__dirname, '../../db')
@@ -85,7 +85,6 @@ exports.register = (server, options, next) ->
         options = {}
 
       cache_key = model
-
       server.methods.cache.get cache_key, (err, val) ->
         return next(null, JSON.parse(val)) if val?
         orm[model].findAll(options, true).then (data) ->

@@ -3,6 +3,7 @@
 
 <!-- START THE FEATURETTES -->
     {% for game in games %}
+        {% if game.active %}
         <div class="row featurette">
             <div class="col-md-7">
                 <h2 class="featurette-heading"><a href="/game/{{ game.slug }}">{{ game.name }}</a></h2>
@@ -19,6 +20,7 @@
             </a>
             </div>
         </div>
+        {% endif %}
     {% endfor %}
 
     <hr class="featurette-divider">

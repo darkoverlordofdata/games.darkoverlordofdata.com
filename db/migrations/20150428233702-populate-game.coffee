@@ -1,11 +1,11 @@
 "use strict"
+Promise = require('promise')
+
 module.exports =
   up: (queryInterface, Sequelize, done) ->
 
-    Games = queryInterface.sequelize.models.Game
-
-    Games.sync().then ->
-      Games.create(
+    data = [
+      {
         active: true
         name: 'Asteroid Simulator'
         slug: 'asteroids'
@@ -22,7 +22,31 @@ module.exports =
         width: 800
         createdAt: Date.now()
         updatedAt: 0
-      ).then ->
+      }
+      {
+        active: false
+        name: 'Alien Zone'
+        slug: 'alienzone'
+        url: 'https://darkoverlordofdata.com/alienzone-haxe'
+        leaderboard: true
+        queue: 'https://alienzone.firebaseio.com/scores/'
+        token: 'ALIENZONE_D16A'
+        author: 'darkoverlordofdata'
+        description: 'Matching Space Crystals'
+        version: '0.0.1'
+        icon: 'alienzone.png'
+        main: 'index.html'
+        height: 600
+        width: 800
+        createdAt: Date.now()
+        updatedAt: 0
+      }
+    ]
+    Games = queryInterface.sequelize.models.Game
+    Games.sync()
+    .then ->
+      Promise.all(data.map(Games.create))
+      .then ->
         done()
 
   down: (queryInterface, Sequelize, done) ->
