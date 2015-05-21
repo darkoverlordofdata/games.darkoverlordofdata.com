@@ -1,5 +1,7 @@
 ###
  * Leaderboard application
+ *
+ * using agorogames-leaderboard component
 ###
 ##
 #
@@ -117,14 +119,27 @@ exports.register = (server, options, next) ->
         leaderboard.disconnect()
 
 
-  #http://bosco.com:3000
-  #/leaderboard/score
-  #POST
-  #{"id":"asteroids","title":"Asteroid Simulator","appId":7777777,"userId": 66666666,"date":20150520,"score": 42}
+
+  ###
+   * Get leaderboard data to client
+  ###
+  server.route
+    method: 'GET'
+    path: '/leaderdata/{name}/{id}'
+    handler: (request, reply) ->
+      leaderboard = new Leaderboard(request.params.name, config, redis)
+      leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
+
+      leaderboard.aroundMe request.params.id, withMemberData: false, (leaders) ->
+        reply(JSON.stringify(leaders))
+        leaderboard.disconnect()
+
 
   ###
    * Push the score to the appropriate queue
    * Use this route when the client doesn't support Firebase
+   *
+   * NB - how do we validate the source?
   ###
   server.route
     method: 'POST'
