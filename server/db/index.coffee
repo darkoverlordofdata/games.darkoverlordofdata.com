@@ -53,19 +53,25 @@ exports.register = (server, options, next) ->
   ###
   server.method
 
-    name: 'find'
+    name: 'db.find'
     #
     # Find by criteria
     #
     method: (model, options, next) ->
 
+      cache = options.cache
+      cache = true unless cache?
       cache_key = model+JSON.stringify(options)
-
-      server.methods.cache.get cache_key, (err, val) ->
-        return next(null, JSON.parse(val)) if val?
+      if cache
+        server.methods.cache.get cache_key, (err, val) ->
+          return next(null, JSON.parse(val)) if val?
+          orm[model].find(options, true).then (data) ->
+            server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
+            return next(null, data)
+      else
         orm[model].find(options, true).then (data) ->
           server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
-          next(null, data)
+          return next(null, data)
 
   ###
    * Server Method FindAll
@@ -74,7 +80,7 @@ exports.register = (server, options, next) ->
   ###
   server.method
 
-    name: 'findAll'
+    name: 'db.findAll'
     #
     # Find all data for the model
     #
@@ -90,6 +96,23 @@ exports.register = (server, options, next) ->
         orm[model].findAll(options, true).then (data) ->
           server.methods.cache.set(cache_key, JSON.stringify(data), cacheErrorHandler, EXPIRES)
           next(null, data)
+
+
+  ###
+   * Server Method Create
+   *
+   * Creates a new model instance
+  ###
+  server.method
+
+    name: 'db.create'
+
+    method: (model, attrs, next) ->
+      orm[model].create(attrs).then (result) ->
+        next(null, result)
+
+
+
 
   next()
   return

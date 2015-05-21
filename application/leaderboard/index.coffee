@@ -12,6 +12,7 @@ exports.register = (server, options, next) ->
   scoring = require('./scoring')
   config = require('./config')
   redis = require('./redis')
+  lib = require('../lib')
   # options cache
   scoreBy = {}
   titles = {}
@@ -21,7 +22,7 @@ exports.register = (server, options, next) ->
   ###
    Initialize the leaderboard queue for each game
   ###
-  server.methods.findAll 'Game', (err, games) ->
+  server.methods.db.findAll 'Game', (err, games) ->
     games.forEach (game) ->
       return unless game.active
       return unless game.leaderboard  # is it active?
@@ -33,7 +34,7 @@ exports.register = (server, options, next) ->
       scoreBy[game.slug] = {}
       titles[game.slug] = {}
 
-      server.methods.findAll 'Leaderboard', where: slug: game.slug, (err, leaderboards) ->
+      server.methods.db.findAll 'Leaderboard', where: slug: game.slug, (err, leaderboards) ->
         if leaderboards.length is 1
           # just use the slug
           scoreBy[game.slug][leaderboards[0].title] = leaderboards[0].scoring
@@ -137,20 +138,69 @@ exports.register = (server, options, next) ->
 
   ###
    * Push the score to the appropriate queue
-   * Use this route when the client doesn't support Firebase
+   * Use this route when the client doesn't support Firebase (cocoonjs)
    *
-   * NB - how do we validate the source?
   ###
   server.route
     method: 'POST'
     path: '/leaderboard/score'
     handler: (request, reply) ->
       form = request.payload
+
+      return if form.key isnt lib.getKey(form.appId, form.userId)
+
       if queues[form.id]?
         queues[form.id].push(form)
 
 
+  ###
+   * Get Registered Leaderboard Player Screen Name
+  ###
+  server.route
+    method: 'GET'
+    path: '/leaderboard/register/{name}'
+    handler: (request, reply) ->
+
+      server.methods.db.find 'Player', cache: false, where: name: request.params.name, (err, name) ->
+        if err
+          reply(JSON.stringify(err))
+        else
+          if name is null then reply(JSON.stringify(status:'not found')) else reply(JSON.stringify(status:'ok'))
+
+
+  ###
+   * Register a Leaderboard Player Screen Name
+  ###
+  server.route
+    method: 'POST'
+    path: '/leaderboard/register/{name}'
+    handler: (request, reply) ->
+      form = request.payload
+      return if form.key isnt lib.getKey(form.appId, form.userId)
+
+      player =        # New player record
+        active        : true
+        userId        : form.userId
+        name          : request.params.name
+        description   : form.description
+        createdAt     : Date.now()
+        updatedAt     : 0
+
+      server.methods.db.find 'Player', cache: false, where: name: request.params.name, (err, name) ->
+        if err
+          reply(JSON.stringify(err))
+        else
+          if name is null
+            server.methods.db.create 'Player', player, (err) ->
+              if err then reply(JSON.stringify(err)) else reply(JSON.stringify(status:'ok'))
+          else
+            reply(JSON.stringify(status:'inuse'))
+
+
+
+
   next()
   return
+
 
 exports.register.attributes = name: 'leaderboard'

@@ -143,6 +143,35 @@
           ".write":"(false)",
           ".read":"true"
         }
+      },
+      "Player": {
+        ".indexOn": ["id", "name"],
+        ".write":"(false)",
+        ".read":"true",
+        "active": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "id": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "name": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "description": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "createdAt": {
+          ".write":"(false)",
+          ".read":"true"
+        },
+        "updatedAt": {
+          ".write":"(false)",
+          ".read":"true"
+        }
       }
     },
     "system": {

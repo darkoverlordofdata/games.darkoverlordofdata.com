@@ -54,6 +54,18 @@ schema:
             createdAt:    {type: number}
             updatedAt:    {type: number}
 
+        Player:
+          type: object
+          indexOn: [id, name]
+          properties:
+            active:       {type: boolean}
+            id:           {type: string}
+            name:         {type: string}
+            description:  {type: string}
+            createdAt:    {type: number}
+            updatedAt:    {type: number}
+
+
     system:
       type: object
       properties:

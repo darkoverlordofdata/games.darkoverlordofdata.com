@@ -24,7 +24,7 @@ exports.register = (server, options, next) ->
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Game', where:slug:request.params.name, (err, game) ->
+          server.methods.db.find 'Game', where:slug:request.params.name, (err, game) ->
             reply.redirect game.url+'/'+game.main
 
     }
@@ -36,7 +36,7 @@ exports.register = (server, options, next) ->
       path: '/game/{name}'
       config:
         handler: (request, reply) ->
-          server.methods.find 'Game', where:slug:request.params.name, (err, game) ->
+          server.methods.db.find 'Game', where:slug:request.params.name, (err, game) ->
             reply.view 'play_game', game: game
 
     }
