@@ -14,12 +14,14 @@
 Hapi = require('hapi')
 module.exports = server = new Hapi.Server(app: require('../config'), cache: require('./cache'), load:sampleInterval:1000)
 
+#server.connection({ routes: { cors: true } }).
 #
 # Set host and port
 #
 server.connection
   port: server.settings.app.port
   host: server.settings.app.host
+  routes: cors: server.settings.app.cors
 
 #
 # Set the default views engine and folder

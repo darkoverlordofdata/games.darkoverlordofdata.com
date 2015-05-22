@@ -83,4 +83,19 @@ module.exports =
   host: process.env.OPENSHIFT_NODEJS_IP ? 'bosco.com'
 
 
+  #|
+  #|--------------------------------------------------------------------------
+  #| CORS
+  #|--------------------------------------------------------------------------
+  #|
+  #| Cross-origin resource sharing
+  #|
+  #| Allow requests from other domains
+  #| Enabled in development for functional testing
+  #|
+  #|
+  cors: if process.env.NODE_ENV? then false else true
+
+
+
 

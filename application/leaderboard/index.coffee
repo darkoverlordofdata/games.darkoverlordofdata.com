@@ -126,7 +126,7 @@ exports.register = (server, options, next) ->
   ###
   server.route
     method: 'GET'
-    path: '/leaderdata/{name}/{id}'
+    path: '/leaderboard/{name}/{id}'
     handler: (request, reply) ->
       leaderboard = new Leaderboard(request.params.name, config, redis)
       leaderboard.redisConnection.auth(redis.auth_pass) if redis.auth_pass?
@@ -165,7 +165,8 @@ exports.register = (server, options, next) ->
         if err
           reply(JSON.stringify(err))
         else
-          if name is null then reply(JSON.stringify(status:'not found')) else reply(JSON.stringify(status:'ok'))
+          reply(JSON.stringify(status: if name is null then 'not found' else 'ok'))
+#          if name is null then reply(JSON.stringify(status:'not found')) else reply(JSON.stringify(status:'ok'))
 
 
   ###
