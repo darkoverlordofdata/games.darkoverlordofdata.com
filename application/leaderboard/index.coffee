@@ -177,7 +177,7 @@ exports.register = (server, options, next) ->
     path: '/leaderboard/register/{name}'
     handler: (request, reply) ->
       form = request.payload
-      return if form.key isnt lib.getKey(form.appId, form.userId)
+      return reply(JSON.stringify(status: 'zorg')) if form.key isnt lib.getKey(form.appId, form.userId)
 
       player =        # New player record
         active        : true
