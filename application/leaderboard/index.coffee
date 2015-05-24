@@ -166,8 +166,6 @@ exports.register = (server, options, next) ->
           reply(JSON.stringify(err))
         else
           reply(JSON.stringify(status: if name is null then 'not found' else 'ok'))
-#          if name is null then reply(JSON.stringify(status:'not found')) else reply(JSON.stringify(status:'ok'))
-
 
   ###
    * Register a Leaderboard Player Screen Name

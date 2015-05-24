@@ -24,7 +24,7 @@ module.exports =
         updatedAt: 0
       }
       {
-        active: false
+        active: true
         name: 'Alien Zone'
         slug: 'alienzone'
         url: 'https://darkoverlordofdata.com/alienzone-haxe'
@@ -34,7 +34,7 @@ module.exports =
         author: 'darkoverlordofdata'
         description: 'Matching Space Crystals'
         version: '0.0.1'
-        icon: 'alienzone.png'
+        icon: 'favicon.png'
         main: 'index.html'
         height: 600
         width: 800

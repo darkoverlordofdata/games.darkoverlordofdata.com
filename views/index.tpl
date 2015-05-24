@@ -5,7 +5,7 @@
     {% for game in games %}
         {% if game.active %}
         <div class="row featurette">
-            <div class="col-md-7">
+            <div class="col-md-7 {% cycle 'col-md-push-5', ''  %}">
                 <h2 class="featurette-heading"><a href="/game/{{ game.slug }}">{{ game.name }}</a></h2>
                 <p class="lead">{{ game.description }}
                     <!--<img src="img/nw.png">-->
@@ -15,15 +15,14 @@
                     <a href="/leaderboard/{{ game.slug }}">Leaderboard</a>
                 </p>
             </div>
-            <div class="col-md-5"><a href="/game/{{ game.slug }}">
+            <div class="col-md-5 {% cycle 'col-md-pull-7', '' %}"><a href="/game/{{ game.slug }}">
                 <img class="featurette-image img-responsive img-rounded center-block" src="assets/{{ game.slug }}.png" alt="{{ game.name }}">
             </a>
             </div>
         </div>
+        <hr class="featurette-divider">
         {% endif %}
     {% endfor %}
-
-    <hr class="featurette-divider">
 
     <div class="row featurette">
       <div class="col-12">
