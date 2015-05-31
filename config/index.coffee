@@ -94,7 +94,7 @@ module.exports =
   #| Enabled in development for functional testing
   #|
   #|
-  cors: if process.env.NODE_ENV? then false else true
+  cors: true #if process.env.NODE_ENV? then false else true
 
 
 
