@@ -27,7 +27,7 @@ module.exports =
         active: true
         name: 'Alien Zone'
         slug: 'alienzone'
-        url: 'https://darkoverlordofdata.com/alienzone-haxe'
+        url: 'https://darkoverlordofdata.com/alienzone'
         leaderboard: true
         queue: 'https://alienzone.firebaseio.com/scores/'
         token: 'ALIENZONE_D16A'
