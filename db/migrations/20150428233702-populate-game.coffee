@@ -17,7 +17,7 @@ module.exports =
         description: 'Classic Space Rocks using modern physics'
         version: '0.0.1'
         icon: 'asteroids36.png'
-        main: 'asteroids.html'
+        main: 'index.html'
         height: 600
         width: 800
         createdAt: Date.now()
